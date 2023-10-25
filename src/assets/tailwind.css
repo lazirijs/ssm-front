@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;300;400;500;600;700&display=swap");
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+* {
+  outline:0;
+  user-select:none;
+  text-decoration:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  -webkit-tap-highlight-color:#ffffff00;
+  font-family:"Readex Pro", sans-serif;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  height:100vh;
+  width:100%;
+  max-width:100%;
+  min-width: 100%;
+  color: #212937;
+  overflow-x: hidden;
+  background: #ededed;
+}
+
+@layer base {
+  * {
+    @apply first-letter:uppercase; 
+  }
+
+  ::-webkit-scrollbar {
+    @apply hidden
+  }
+
+  /* ::-webkit-scrollbar {
+    @apply w-5
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply m-[2px]
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#aeaeae] rounded-v transition duration-500 ease-in-out border-[8px] border-solid border-white;
+  } */
+
+  input,
+  textarea {
+    @apply bg-transparent;
+  }
+
+  h1 {
+    @apply text-3xl font-semibold;
+  }
+
+  h2 {
+    @apply text-xl font-semibold;
+  }
+
+  h3 {
+    @apply text-lg;
+  }
+
+  h4 {
+    @apply text-base;
+  }
+
+  h5 {
+    @apply text-sm;
+  }
+
+  h6 {
+    @apply text-xs;
+  }
+
+}
+
+@layer utilities {
+
+  .between { 
+    @apply flex justify-between items-center; 
+  }
+
+  .smooth {
+    @apply transition duration-500 ease-in-out;
+  }
+
+  .rounded-v {
+    @apply rounded-lg
+  }
+
+  .bg-v {
+    @apply bg-[#ededed];
+  }
+
+  /* VueJs Transition */
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
+  }
+
+}
+
+@layer components {
+  #app { 
+    @apply h-[inherit] flex flex-col gap-4 p-4;
+  }
+}

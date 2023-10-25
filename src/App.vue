@@ -1,30 +1,16 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <nav-app v-if="user" />
+  <div class="h-full w-full flex gap-4 overflow-y-auto">
+    <router-view v-if="user" class="bg-white rounded-v p-4 w-full overflow-y-auto break-words" />
+    <div v-else class="bg-white rounded-v p-4 w-full break-words flex justify-center items-center uppercase">Loading...</div>
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script setup>
+import navApp from "@/components/nav-app.vue";
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+const store = useStore();
+const user = ref(computed(() => store.state.user != null ));
+</script>
