@@ -100,16 +100,17 @@ body {
     @apply bg-[#ededed];
   }
 
-  /* VueJs Transition */
-  .v-enter-active,
-  .v-leave-active {
-    transition: opacity 0.5s ease;
+  .bg-v-1 {
+    @apply bg-[#e5e7eb];
   }
 
-  .v-enter-from,
-  .v-leave-to {
-    opacity: 0;
+  .your-element::before {
+    content: "\00a0"; /* Add a non-breaking space */
   }
+  
+  .your-element {
+    letter-spacing: 0.3em; /* Adjust the value to control the space between letters */
+  }  
 
 }
 
@@ -117,4 +118,14 @@ body {
   #app { 
     @apply h-[inherit] flex flex-col gap-4 p-4;
   }
+}
+  
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
