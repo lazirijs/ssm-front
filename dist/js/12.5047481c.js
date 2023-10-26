@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkssm_saas"]=self["webpackChunkssm_saas"]||[]).push([[12],{89:function(n,s){s.Z=(n,s)=>{const t=n.__vccOpts||n;for(const[c,u]of s)t[c]=u;return t}},4012:function(n,s,t){t.r(s),t.d(s,{default:function(){return i}});var c=t(3396);const u=(0,c._)("h4",null,"This is an contactus page",-1),r=[u];function a(n,s){return(0,c.wg)(),(0,c.iD)("div",null,r)}var e=t(89);const o={},f=(0,e.Z)(o,[["render",a]]);var i=f}}]);
-//# sourceMappingURL=12.5047481c.js.map
