@@ -104,14 +104,6 @@ body {
     @apply bg-[#e5e7eb];
   }
 
-  .your-element::before {
-    content: "\00a0"; /* Add a non-breaking space */
-  }
-  
-  .your-element {
-    letter-spacing: 0.3em; /* Adjust the value to control the space between letters */
-  }  
-
 }
 
 @layer components {

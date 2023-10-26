@@ -18,7 +18,7 @@
         <input class="w-full placeholder:text-sm" :readonly="readonly" @:input="emits('update', $event.target.value)"
             :value="value" :type="type" :placeholder="placeholder || 'enter text here'" :maxlength="maxlength"
             :minlength="minlength"
-            :style="`${center && '    text-align: center; letter-spacing: .5rem; margin-left: .5rem;'} ${(loading || readonly) && 'cursor: default;'}`" />
+            :style="`${center && 'text-align: center; letter-spacing: .5rem; margin-left: .5rem;'} ${(loading || readonly) && 'cursor: default;'}`" />
         <icon-app v-if="btnIcon" @click="emits('btn')" :icon="btnIcon" class="w-7" />
     </div>
 </template>
