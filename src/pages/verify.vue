@@ -16,10 +16,10 @@
         label="new password" type="password" icon="fluent:shield-person-20-filled" placeholder="password123"
         :readonly="loading" />
       <input-app :value="user.OTP" @update="user.OTP = $event" label="OTP" :subText="!loading && resError"
-        subTextColor="red" icon="teenyicons:otp-solid" placeholder="196785" center btnIcon="v" minlength="6"
+        subTextColor="red" icon="teenyicons:otp-solid" placeholder="196785" center minlength="6"
         maxlength="6" :readonly="loading" />
       <h6>OTP is a code contain 6 numbers.</h6>
-      <btn-app text="verify" @click="verify" icon="fluent:checkmark-12-filled" class="w-5/12 mt-4 mx-auto"
+      <btn-app text="verify" @click="verify" icon="fluent:checkmark-12-filled" dark class="mt-4 mx-auto"
         :loading="loading" />
     </form>
     <h5 class="w-10/12 my-4 text-gray-600">if you don't receive an OTP, try to <a

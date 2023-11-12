@@ -43,10 +43,62 @@ const routes = [
     component: () => import('../pages/account.vue')
   },
   {
-    path: '/school',
+    path: '/school/:code',
     name: 'school',
     meta: { auth: "required" },
-    component: () => import('../pages/school.vue')
+    component: () => import('../pages/school.vue'),
+    children: [
+      {
+        path: "dashboard",
+        name: "dashboard",
+        component: () => import("../components/school/dashboard.vue")
+      },
+      {
+        path: "students",
+        name: "students",
+        component: () => import("../components/school/students.vue")
+      },
+      {
+        path: "students/new",
+        name: "new student",
+        component: () => import("../components/school/student.vue")
+      },
+      {
+        path: "students/:student",
+        name: "student",
+        component: () => import("../components/school/student.vue")
+      },
+      {
+        path: "teachers",
+        name: "teachers",
+        component: () => import("../components/school/teachers.vue")
+      },
+      {
+        path: "courses",
+        name: "courses",
+        component: () => import("../components/school/courses.vue")
+      },
+      {
+        path: "timetable",
+        name: "timetable",
+        component: () => import("../components/school/timetable.vue")
+      },
+      {
+        path: "statistics",
+        name: "statistics",
+        component: () => import("../components/school/statistics.vue")
+      },
+      {
+        path: "finance",
+        name: "finance",
+        component: () => import("../components/school/finance.vue")
+      },
+      {
+        path: "settings",
+        name: "settings",
+        component: () => import("../components/school/settings.vue")
+      },
+    ],
   },
   {
     path: "/:pathMatch(.*)*",

@@ -4,6 +4,7 @@ export default createStore({
   state: {
     OTP: null,
     user: null,
+    schools: [],
   },
   getters: {
   },
@@ -14,14 +15,15 @@ export default createStore({
     user(state, payload) {
       state.user = payload;
     },
+    schools(state, payload) {
+      state.schools = payload;
+    },
+    addSchool(state, payload) {
+      const index = state.schools.findIndex((obj) => obj.code == payload.code);
+      index == -1 ? state.schools.push(payload) : state.schools[index] = payload;
+  },
   },
   actions: {
-    async OTP({ commit }, payload) {
-      commit("OTP", payload);
-    },
-    async user({ commit }, payload) {
-      commit("user", payload);
-    },
   },
   modules: {
   }

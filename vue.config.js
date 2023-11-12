@@ -4,8 +4,8 @@ module.exports = defineConfig({
   lintOnSave: false,
   pwa: {
     name: "Laziri",
-    themeColor: "#ededed",
-    msTileColor: "#ededed",
+    themeColor: "#e5e7eb",
+    msTileColor: "#e5e7eb",
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "#ffffff",
   },
