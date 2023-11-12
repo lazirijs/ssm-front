@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="h-full space-y-4" :class="{ 'hidden sm:block': !comp.courses }">
-          <div class="max-h-[250px] sm:h-full space-y-4 overflow-y-auto">
+          <div class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !zoom }">
             <h5 v-for="(item, index) in courses" :key="index" @click="selectedCourse = (selectedCourse == index ? null : index)" class="flex-between gap-2 sm:gap-4 rounded-v p-2 smooth cursor-pointer" :class="{ 'bg-dark': selectedCourse == index, 'bg-v': selectedCourse != index }">
               <div class="truncate">{{ item.course }}</div>
               <div class="min-w-[1rem] h-4 rounded-full" :style="`background: ${item.linked ? '#0B6E4F' : '#FA9F42' };`"></div>
@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="h-full space-y-4" :class="{ 'hidden sm:block': !comp.payment }">
-          <div class="max-h-[250px] sm:h-full space-y-4 overflow-y-auto">
+          <div class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !zoom }">
             <h5 v-for="(item, index) in payments" :key="index" class="flex-between gap-2 sm:gap-4 bg-v rounded-v p-2">
               <div class="w-full grid grid-cols-10 gap-2">
                 <div class="text-center truncate col-span-1">{{ item.quantity }} x </div>
@@ -110,7 +110,7 @@
           </div>
         </div>
         <div class="h-full space-y-4" :class="{ 'hidden sm:block': !comp.attendance }">
-          <div class="max-h-[250px] sm:h-full space-y-4 overflow-y-auto">
+          <div class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !zoom }">
             <h5 v-for="(item, index) in attendance" :key="index" class="flex-between gap-2 sm:gap-4 bg-v rounded-v p-2">
               <div class="w-full grid grid-cols-6 gap-2">
                 <div class="truncate col-span-4">{{ item.course }}</div>
