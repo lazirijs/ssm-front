@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white w-full sm:w-6/12 md:w-6/12 lg:w-4/12 flex flex-col items-center text-center gap-4 p-4 rounded-v m-auto mt-0">
+  <div style="height: fit-content !important;" class="bg-white w-full sm:w-6/12 md:w-6/12 lg:w-4/12 flex flex-col items-center text-center gap-4 p-4 rounded-v m-auto mt-0">
     <h3>Welcome Back</h3>
     <h5>Login to your account using</h5>
     <!-- <div class="w-10/12 flex-between m-auto">
