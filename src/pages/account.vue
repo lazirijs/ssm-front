@@ -11,7 +11,8 @@
         <h6 class="text-gray-600">tap here to copy your code</h6>
       </div>
       <h6 class="mx-auto text-gray-600">{{ user.email }}</h6>
-      <div v-if="schools && schools.length" class="grid gap-4">
+      <h6 v-if="!schools && getting" class="text-center animate-pulse pt-8">Loading...</h6>
+      <div v-if="schools?.length" class="grid gap-4">
         <hr>
         <h2>school's <a v-if="getting" class="animate-pulse">...</a></h2>
         <div class="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -22,7 +23,7 @@
         </div>
         <hr>
       </div>
-      <div  v-if="schools && schools.length && !more">
+      <div  v-if="schools?.length && !more">
         <h6 class="text-center">need more schools ? <br> click <a @click="more = true" class="link">here</a>.</h6>
       </div>
       <div v-if="schools && (more || !schools.length)" class="grid sm:block gap-8">
