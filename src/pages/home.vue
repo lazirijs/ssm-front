@@ -1,20 +1,22 @@
 <template>
-  <div>
-    <img alt="Vue logo" src="../assets/logo.png" class="m-auto">
-    <hello-world :msg="data"/>
+  <div v-bind="$attrs" class="hidden" />
+  <div class="w-full bg-white rounded-v flex-center" :style="`height: ${screenHeight}px;`">
+    <div class="grid gap-4">
+      <h1 class="font-semibold md:font-extrabold tracking-wide">
+        Keep it Sample.
+      </h1>
+      <h6 class="text-gray-600"> 
+        let us take care of your school management <br> 
+        so you can enjoy peace of mind <br> 
+        For only <a class="font-bold">4000 DZD/month.</a> <br>
+        need help? click <a href="/help?create-school" class="link">here.</a>
+      </h6>
+    </div>
   </div>
 </template>
 
 <script setup>
-// @ is an alias to /src
 import { ref } from 'vue'
-import { api } from '@/plugins/axios.js'
-import HelloWorld from '@/components/HelloWorld.vue'
 
-const data = ref();
-
-( async () => { 
-  const result = await api.get("/");
-  data.value = new Date(result.data).getHours() + ":" + new Date(result.data).getMinutes();
-})()
+const screenHeight = ref(window.innerHeight - 48.34 - 16 * 3);
 </script>

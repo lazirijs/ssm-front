@@ -69,24 +69,24 @@ const routes = [
         component: () => import("../components/school/student.vue")
       },
       {
-        path: "teachers",
-        name: "teachers",
-        component: () => import("../components/school/teachers.vue")
-      },
-      {
         path: "courses",
         name: "courses",
         component: () => import("../components/school/courses.vue")
       },
       {
+        path: "courses/new",
+        name: "new course",
+        component: () => import("../components/school/course.vue")
+      },
+      {
+        path: "courses/:course",
+        name: "course",
+        component: () => import("../components/school/course.vue")
+      },
+      {
         path: "timetable",
         name: "timetable",
         component: () => import("../components/school/timetable.vue")
-      },
-      {
-        path: "statistics",
-        name: "statistics",
-        component: () => import("../components/school/statistics.vue")
       },
       {
         path: "finance",
@@ -123,7 +123,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (user == null) {
     const result = await api.get("/api/users/enter");
-    store.commit("user", result.data);
+    store.commit("set", {key: "user", value: result.data});
     user = result.data;
   }
   

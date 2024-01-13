@@ -5,7 +5,6 @@
     <btn-app @click="notify" text="apple" />
     <btn-app @click="notify" icon="formkit:apple"/>
     <input-app :value="text" @update="text = $event" label="enter text here" />
-    <input-app :value="text" @update="text = $event" textarea label="enter text here" />
     text hre
   </div>
 </template>

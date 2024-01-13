@@ -1,0 +1,1 @@
+exports.validated = ({arr, err = [null, undefined, ''], add = []}) => !arr.some(i => [...err, ...add].includes(typeof i == 'string' ? i.replaceAll(' ', '') : i));

@@ -1,5 +1,5 @@
 <template>
-  <div style="height: fit-content !important;" class="bg-white w-full sm:w-6/12 md:w-6/12 lg:w-4/12 flex flex-col items-center text-center gap-4 p-4 rounded-v m-auto mt-0">
+  <div style="height: fit-content !important;" class="bg-White w-full sm:w-6/12 md:w-6/12 lg:w-4/12 flex flex-col items-center text-center gap-4 p-4 rounded-v m-auto mt-0">
     <h3 v-if="OTPfor == 'login' || OTPfor == 'signup'">Verify your Email</h3>
     <h3 v-else>Forget Password</h3>
     <h5 v-if="OTPfor == 'login' || OTPfor == 'signup'" class="w-10/12">
@@ -16,7 +16,7 @@
         :readonly="loading" />
       <input-app :value="user.OTP" @update="user.OTP = $event" label="OTP" icon="teenyicons:otp-solid" type="number" placeholder="196785" center minlength="6"
         maxlength="6" :readonly="loading" />
-      <h6 :class="{ 'text-red-500': !loading && resError }">{{ (!loading && resError) || "OTP is a code contain 6 numbers."}}</h6>
+      <h5 :class="{ 'text-red-500': !loading && resError }">{{ (!loading && resError) || "OTP is a code contain 6 numbers."}}</h5>
       <btn-app text="verify" @click="verify" icon="fluent:checkmark-12-filled" dark class="mt-4 mx-auto"
         :loading="loading" />
     </form>
@@ -30,12 +30,11 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
+import store from '@/store';
+import router from '@/router';
+import { useRoute } from 'vue-router'
 import { api } from '@/plugins/axios.js';
 
-const store = useStore();
-const router = useRouter();
 const route = useRoute();
 
 const OTPfor = ref(route.query.OTP);
@@ -67,7 +66,7 @@ const verify = async () => {
   try {
     loading.value = true;
     const result = await api.post(`/api/OTP/verify/${OTPfor.value}`, user.value);
-    store.commit("user", result.data);
+    store.commit("set", {key: "user", value: result.data});
     router.push('/account');
   } catch (error) {
     loading.value = false;

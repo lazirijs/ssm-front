@@ -5,10 +5,16 @@ import router from './router'
 import store from './store'
 import './assets/tailwind.css'
 import { Icon } from "@iconify/vue";
-import input from "./utilities/input.vue";
-import button from "./utilities/button.vue";
+import input from "./components/utilities/input.vue";
+import button from "./components/utilities/button.vue";
 
-createApp(App).use(store).use(router)
+import { toDate } from './utilities/date';
+
+const app = createApp(App);
+
+app.config.globalProperties.$toDate = (e, type) => toDate(e, type);
+
+app.use(store).use(router)
 .component("btn-app", button)
 .component("input-app", input)
 .component("icon-app", Icon)
