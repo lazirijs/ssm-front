@@ -2,7 +2,6 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    OTP: null,
     user: null,
     school: null,
     student: null,
@@ -12,6 +11,7 @@ export default createStore({
     payments: [],
     lessons: [],
     presence: [],
+    timetables: [],
   },
   getters: {
   },

@@ -27,7 +27,7 @@
     <h5 v-else @scroll="loadmore" class="h-full space-y-4 overflow-y-auto">
       <router-link v-for="(student, index) in students" :key="index"
         :to="`/school/${school.code}/students/${student.uid}`" translate="no"
-        class="flex-between gap-4 bg-v rounded-v py-3 cursor-pointer smooth z-0">
+        class="flex-between gap-4 bg-v bg-v-hover rounded-v py-3 cursor-pointer smooth">
         <div class="min-w-[36px] flex justify-end items-center cursor-pointer">
           <icon-app icon="fluent:folder-16-filled" />
         </div>
@@ -45,7 +45,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import store from '@/store';
 
 const { school } = defineProps({

@@ -20,7 +20,7 @@
       </div>
       <div v-if="!data.student.isNew && lessons.length" class="h-full space-y-4" :class="{ 'hidden sm:block': !comp }">
         <div class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !data.zoom }">
-          <h5 v-for="(lesson, index) in lessons" :key="index" class="flex-between gap-2 sm:gap-4 bg-v rounded-v p-2">
+          <h5 v-for="(lesson, index) in lessons" :key="index" class="flex-between gap-2 sm:gap-4 bg-v bg-v-hover rounded-v p-2 smooth">
               <div class="w-full grid grid-cols-6 gap-2">
                   <div class="truncate col-span-4">{{ store.state.courses.find(obj => obj.uid == lesson.course)?.name }}</div>
                   <div class="truncate text-center col-span-2">{{ $toDate(lesson.created_at) }}</div>
@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import { useStore } from 'vuex';
 
 const store = useStore();

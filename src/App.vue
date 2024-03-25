@@ -9,8 +9,8 @@
 <script setup>
 import navApp from "@/components/nav-app.vue";
 import { ref, computed, watch } from 'vue';
-import store from '@/store';
 import { useRoute } from 'vue-router';
+import store from '@/store';
 
 const route = useRoute();
 const school = ref(false);

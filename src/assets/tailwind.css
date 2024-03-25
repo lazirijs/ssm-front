@@ -1,9 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;300;400;500;600;700&display=swap");
 
 @tailwind base;
-
 @tailwind components;
-
 @tailwind utilities;
 
 * {
@@ -85,6 +83,11 @@ body {
   h6 {
     @apply text-xs;
   }
+  
+  .text-micro {
+    font-size: .6rem/* 10px */;
+    line-height: .75rem/* 12px */;
+  }
 
 }
 
@@ -126,16 +129,20 @@ body {
     @apply bg-gray-200 text-[#212937] dark:bg-gray-700 dark:text-white /* #e5e7eb */;
   }
 
+  .bg-v-hover {
+    @apply hover:bg-gray-300 hover:dark:bg-gray-600;
+  }
+
   .bg-g3 {
     @apply bg-gray-300;
   }
 
   .bg-g8, .bg-dark {
-    @apply bg-gray-800 text-white;
+    @apply bg-gray-800 dark:bg-gray-500 text-white ;
   }
 
   .btn-mini {
-    @apply min-w-[36px] min-h-[36px] bg-dark rounded-v flex-center cursor-pointer;
+    @apply min-w-[36px] min-h-[36px] bg-dark dark:bg-gray-700 hover:opacity-80 rounded-v flex-center cursor-pointer smooth;
   }
 
 }

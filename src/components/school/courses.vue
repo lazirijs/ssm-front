@@ -20,7 +20,7 @@
         </div>
         <h6 v-if="!courses.length" class="h-full flex-center">{{ getting ? "LOADING..." : "no data to display"}}</h6>
         <h5 v-else class="h-full space-y-4 overflow-y-auto">
-            <router-link v-if="search.length" v-for="(course, index) in search" :key="index" :to="`/school/${school.code}/courses/${course.uid}`" translate="no" class="flex-between gap-4 bg-v rounded-v py-3 cursor-pointer smooth">
+            <router-link v-if="search.length" v-for="(course, index) in search" :key="index" :to="`/school/${school.code}/courses/${course.uid}`" translate="no" class="flex-between gap-4 bg-v bg-v-hover rounded-v py-3 cursor-pointer smooth">
               <div class="min-w-[36px] flex justify-end cursor-pointer">
                 <icon-app icon="solar:document-bold" />
               </div>
@@ -40,7 +40,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import store from '@/store';
 
 const { school } = defineProps({

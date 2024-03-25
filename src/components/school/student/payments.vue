@@ -26,7 +26,7 @@
     <div v-if="!data.student.isNew && payments.length" class="h-full space-y-4" :class="{ 'hidden sm:block': !comp }">
       <div @scroll="loadmore" class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !data.zoom }">
         <h5 v-for="(payment, index) in payments" :key="index" @click="more == payment.uid ? more = false : more = payment.uid"
-          class="grid grid-cols-4 gap-2 bg-v rounded-v py-2 cursor-pointer">
+          class="grid grid-cols-4 gap-2 bg-v bg-v-hover rounded-v py-2 cursor-pointer">
           <div v-if="more != payment.uid" dir="ltr" class="flex-between gap-1 col-span-2 px-2">
             <a class="min-w-fit">{{ payment.quantity }}</a>-
             <a dir="auto" class="w-full truncate">{{ payment.course_name }}</a>
@@ -52,7 +52,7 @@
 <script setup>
 import { ref, computed, onMounted, watchEffect } from "vue";
 import { useRouter } from "vue-router";
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import { useStore } from 'vuex';
 
 const store = useStore();

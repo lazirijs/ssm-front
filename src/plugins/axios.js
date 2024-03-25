@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://ssm-back.onrender.com",
+  baseURL: process.env.VUE_APP_API_URL,
   withCredentials: true,
 });
 
-export { api };
+export default api;

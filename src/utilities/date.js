@@ -1,4 +1,7 @@
+// import store from '../store/index';
+// console.log(store.state.user?.time);
 exports.toDate = (e, type = 'date') => {
+    // console.log(e);
     const newDate = e ? new Date(e) : new Date();
     let date = {
         year: newDate.getFullYear(),

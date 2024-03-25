@@ -33,7 +33,7 @@
       <div class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !data.zoom }">
         <h5 v-if="search.length" v-for="(item, index) in search" :key="index" @click="getting ? false : (selected = { ...selected, student: data.student.uid, course: item.uid, course_name: item.name,price: item.price, total: item.price * selected.quantity })"
           class="flex-between gap-2 sm:gap-4 rounded-v p-2 smooth cursor-pointer"
-          :class="{ 'bg-dark': selected.course == item.uid, 'bg-v': selected.course != item.uid }">
+          :class="{ 'bg-dark': selected.course == item.uid, 'bg-v bg-v-hover': selected.course != item.uid }">
           <div dir="auto" translate="no" class="w-full truncate">{{ item.name }}</div>
           <div class="min-w-fit flex-between gap-4">
             <h5 class="min-w-fit">{{ item.price }} DZD</h5>
@@ -66,7 +66,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -86,7 +86,7 @@ const selected = ref({
   course_name: null,
   price: null,
   total: null,
-  quantity: 1
+  quantity: 4
 });
 
 const query = ref({

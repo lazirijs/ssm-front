@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import { useRouter, useRoute } from 'vue-router';
 import { validated } from '@/utilities/validator';
 import { useStore } from 'vuex';

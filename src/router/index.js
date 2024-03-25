@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from "../store/index";
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: () => import('../pages/home.vue')
   },
@@ -25,19 +25,8 @@ const routes = [
     component: () => import('../pages/login.vue')
   },
   {
-    path: '/signup',
-    name: 'signup',
-    meta: { auth: "hide" },
-    component: () => import('../pages/signup.vue')
-  },
-  {
-    path: '/verify',
-    name: 'verify',
-    meta: { auth: "hide" },
-    component: () => import('../pages/verify.vue')
-  },
-  {
-    path: '/account',
+    path: '/',
+    alias: '/account',
     name: 'account',
     meta: { auth: "required" },
     component: () => import('../pages/account.vue')
@@ -89,6 +78,11 @@ const routes = [
         component: () => import("../components/school/timetable.vue")
       },
       {
+        path: "timetable/new",
+        name: "new timetable",
+        component: () => import("../components/school/newtimetable.vue")
+      },
+      {
         path: "finance",
         name: "finance",
         component: () => import("../components/school/finance.vue")
@@ -136,4 +130,4 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
-export default router
+export default router;

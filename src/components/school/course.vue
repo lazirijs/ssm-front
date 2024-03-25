@@ -31,17 +31,17 @@
                     </form>
                 </div>
                 <h5 v-if="route.name == 'course' && lessons.length" class="flex-between text-center px-2">
-                    <div class="w-full">created at</div>
+                    <div class="w-full truncate">created at</div>
                     <div class="w-full">presents</div>
                     <div class="w-full">absents</div>
-                    <div class="w-full">total</div>
+                    <div class="w-full" :class="{ 'hidden sm:block': lesson }">total</div>
                 </h5>
                 <h5 v-if="lesson" class="bg-v rounded-v p-2 flex-between text-center">
                     <div class="w-full sm:hidden">{{ $toDate(lesson.created_at, "date") }}</div>
                     <div class="w-full hidden sm:block">{{ $toDate(lesson.created_at, "timestamp") }}</div>
                     <div class="w-full">{{ lesson?.presents.length }}</div>
                     <div class="w-full">{{ lesson?.absents.length }}</div>
-                    <div class="w-full">{{ lesson?.presents.length + lesson?.absents.length }}</div>
+                    <div class="w-full" :class="{ 'hidden sm:block': lesson }">{{ lesson?.presents.length + lesson?.absents.length }}</div>
                 </h5>
                 <form @submit.prevent="submitForm" v-if="lesson" class="flex-between gap-2">
                     <input-app :value="query.student" @update="query.student = $event" icon="fluent:person-24-filled" type="search" placeholder="student name" accessKey="c" />
@@ -55,24 +55,26 @@
                 <h6 v-if="route.name == 'new course'" class="h-full flex-center pb-2">you have to create course first</h6>
                 <h6 v-else-if="(!lessons.length || (lesson && !students.length)) && (getting.lessons || getting.students)" class="h-full flex-center pb-2">LOADING...</h6>
                 <h6 v-else-if="(!lessons.length || (lesson && !searchStudent.length)) && !getting.lessons && !getting.students" class="h-full flex-center pb-2">no data to display</h6>
-                <h5 v-else-if="lesson" v-for="(student, index) in searchStudent" :key="index" class="bg-v rounded-v p-2 cursor-pointer flex-between">
-                    <router-link :to="`/school/${school.code}/students/${student.uid}`" class="w-full text-center link">{{ student.name }}</router-link>
-                    <div class="w-full text-center">{{ student.birthday }}</div>
+                <h5 v-else-if="lesson" v-for="(student, index) in searchStudent" :key="index" class="bg-v bg-v-hover rounded-v p-2 flex-between smooth">
+                    <div class="w-full text-center truncate"><router-link :to="`/school/${school.code}/students/${student.uid}`" class="hover:link">{{ student.name }}</router-link></div>
+                    <div class="w-full text-center" :class="{ 'hidden sm:block': lesson }">{{ student.birthday }}</div>
                     <div class="w-full text-center" :class="{ 'text-red-500': student.rest == 0 }">rest : {{ student.rest }}</div>
-                    <div class="w-full flex justify-end" @click="update.studentStatus(student)">
-                        <div class="w-4 h-4 rounded-full smooth" :style="`${(() => {
-                            const isPresent = lesson.presents.includes(student.uid);
-                            if (loading.student == student.uid) {
-                                return `color:${isPresent ? '#FA9F42' : '#0B6E4F'};`
-                            } else {
-                                return `background:${isPresent ? '#0B6E4F' : '#FA9F42'};`
-                            }
-                        })()}`">
-                            <icon-app v-if="loading.student == student.uid" icon="svg-spinners:ring-resize" class="w-4 h-4" />
+                    <div class="w-full flex justify-end">
+                        <div @click="update.studentStatus(student)" class="cursor-pointer">
+                            <div class="w-4 h-4 rounded-full smooth" :style="`${(() => {
+                                const isPresent = lesson.presents.includes(student.uid);
+                                if (loading.student == student.uid) {
+                                    return `color:${isPresent ? '#FA9F42' : '#0B6E4F'};`
+                                } else {
+                                    return `background:${isPresent ? '#0B6E4F' : '#FA9F42'};`
+                                }
+                            })()}`">
+                                <icon-app v-if="loading.student == student.uid" icon="svg-spinners:ring-resize" class="w-4 h-4" />
+                            </div>
                         </div>
                     </div>
                 </h5>
-                <h5 v-else-if="lessons.length" v-for="(item, index) in lessons" :key="index+1" @click="getStudents(item)" class="bg-v rounded-v p-2 cursor-pointer flex-between text-center">
+                <h5 v-else-if="lessons.length" v-for="item in lessons" @click="getStudents(item)" class="bg-v bg-v-hover rounded-v p-2 cursor-pointer flex-between text-center smooth">
                     <div class="w-full sm:hidden">{{ $toDate(item.created_at) }}</div>
                     <div class="w-full hidden sm:block">{{ $toDate(item.created_at, "timestamp") }}</div>
                     <div class="w-full">{{ item?.presents.length }}</div>
@@ -88,7 +90,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { validated } from '@/utilities/validator';
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import store from '@/store';
@@ -147,6 +149,9 @@ onMounted(async () => {
         store.commit("add", {key: "courses", value: data});
         store.commit("set", {key: "lessons", value: result.data});
         loadingMore.value.lessons = data.length < 20 && result.data.length;
+        if (route.query.lesson) {
+            await getStudents(result.data.filter(lesson => lesson.uid == route.query.lesson)[0]);
+        }
         getting.value.course = false;
         getting.value.lessons = false;
     } else {
@@ -160,13 +165,13 @@ const getStudents = async (e) => {
     lesson.value = e;
     getting.value.students = true;
     query.value.date = null;
+    router.push({ query: { lesson: e.uid } });
     const result = await api.post("/api/lessons/get/students", { 
         lesson: e.uid, 
         course: e.course, 
         students: [ ...e.presents, ...e.absents ], 
         date: e.created_at, 
     });
-    console.log(result.data);
     students.value = result.data;
     getting.value.students = false;
 };

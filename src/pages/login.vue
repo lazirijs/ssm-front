@@ -1,66 +1,48 @@
 <template>
-  <div style="height: fit-content !important;" class="bg-White w-full sm:w-6/12 md:w-6/12 lg:w-4/12 flex flex-col items-center gap-4 p-4 rounded-v m-auto mt-0">
-    <h3 class="text-center">Welcome Back</h3>
-    <h5 class="text-center">Login to your account using</h5>
-    <!-- <div class="w-10/12 flex-between m-auto">
-      <btn-app text="goolge" icon="logos:google-icon" class="w-5/12" />
-      <btn-app text="microsoft" icon="logos:microsoft-icon" class="w-5/12" />
+  <div v-bind="$attrs" class="hidden" />
+  <div class="w-full h-full bg-White rounded-v flex flex-col sm:flex-row gap-4">
+    <div class="w-full min-h-[232px] grid place-content-center mt-12 sm:mt-0">
+      <div class="w-full flex flex-col gap-4">
+        <div class="text-center sm:text-start grid gap-1">
+          <h1>Join Us.</h1>
+          <h4>access to your account</h4>
+        </div>
+        <div class="grid gap-4 mt-8">
+          <btn-app text="Login with Google" @click="login('google')" icon="flat-color-icons:google" :loading="loading" class="min-w-fit mx-auto sm:mx-0"/>
+        </div>
+        <h6 class="w-8/12 sm:w-full mt-1 mb-4 text-gray-600 dark:text-gray-400 text-center sm:text-start mx-auto sm:mx-0">click on 'Google' to sign up or login to your account</h6>
+      </div>
     </div>
-    <div class="w-full flex-between">
-      <div class="w-full border-[1px]"></div>
-      <div class="w-6/12">Or</div>
-      <div class="w-full border-[1px] rounded-v"></div>
-    </div> -->
-    <form @submit.prevent="submitForm" class="w-full grid gap-4">
-      <input-app :value="user.email" @update="user.email = $event" label="email" :subText="!avalide.email && '(enter a valid email)'" :invalid="!avalide.email && !regex.email" type="email" icon="fluent:person-mail-24-filled"  placeholder="user@email.com" :readonly="loading" />
-      <input-app :value="user.password" @update="user.password = $event" label="password" :subText="!avalide.password && '(at least 8 characters)'" :invalid="!avalide.password && !regex.password" :type="type" icon="fluent:shield-person-20-filled" placeholder="password123" @btn="show(type)" :btnIcon="`fluent:eye${type == 'text' ? '-off' : ''}-16-filled`" :readonly="loading" />
-      <h6>do you forget your password ? <router-link to="/verify?OTP=forget-password" class="text-xs underline decoration-solid">click here</router-link></h6>
-      <btn-app text="enter" @click="login" icon="fluent:person-24-filled" :loading="loading" dark class="min-w-fit mt-4 mx-auto"/>
-    </form>
-    <h6 class="my-4 text-gray-600 text-center">don't have an account ? <router-link to="/signup" class="font-semibold underline decoration-solid">Sign Up</router-link></h6>
+    <div class="w-full h-full roundedv sm:h-auto bg-center bg-cover bg-[url(https://raw.githubusercontent.com/lazirijs/images/main/experiences_devices__ca7eoggbh2z6_large-removebg.png)] sm:bg-[url(https://raw.githubusercontent.com/lazirijs/images/main/experiences_devices__ca7eoggbh2z6_large-removebg%2B.png)]"/>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { api } from '@/plugins/axios.js';
+import { ref } from 'vue';
+import api from '@/plugins/axios.js';
 import store from '@/store';
 import router from '@/router';
+import { googleTokenLogin } from "vue3-google-login"
 
-const type = ref('password');
 const loading = ref(false);
 
-const user = ref({
-  email: null,
-  password: null,
-});
-
-const regex = ref({
-  email: computed(() => (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/).test(user.value.email)),
-  password: computed(() => (/^.{8,100}$/).test(user.value.password)),
-});
-
-const avalide = ref({
-  email: true,
-  password: true
-});
-
-const show = (v) => type.value = v == 'text' ? 'password' : 'text';
-
-const login = async () => {
-
-  avalide.value = regex.value;
-
+const login = async (provider) => {
+  let user;
+  loading.value = true;
   try {
-    if (avalide.value.email && avalide.value.password) {
-      loading.value = true;
-      await api.post("/api/OTP/send", user.value);
-      store.commit("set", {key: "OTP", value: user.value});
-      router.push('/verify?OTP=login');
+    switch (provider) {
+      case "google":
+        // const response = await googleTokenLogin(); 
+        // user = await api.get("/api/users/login/google/"+ response.access_token);
+        user = await api.get("/api/users/login/google/ya29.a0Ad52N3_cFhFs6aDNACDkqkIPLrFoy4QuPjIXd1k9Pt_QK6Ffi3FnvsN30wsF81EXYIT8_Oyuuo-5sLwZDrP8GJAUcui8KXJh4cb3HaD6tTn5p-G2JUBRGFEh-Yf-ciHdpZqlClxSLbTHfE9tSRB_m2mmzhEIGimh_fMaCgYKAXASARISFQHGX2MiL9pkIj5R25uY58ioosPsyQ0170");
+        break;
     }
+    console.log(user.data);
+    store.commit("set", {key: "user", value: user.data});
+    router.push('/account');
   } catch (error) {
     loading.value = false;
-    console.log(error);
+    console.log(error.name, error.message);
   }
 }
 </script>

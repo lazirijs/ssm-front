@@ -1,11 +1,11 @@
 <template>
   <div v-bind="$attrs" class="hidden" />
-  <div class="w-full bg-white rounded-v flex-center" :style="`height: ${screenHeight}px;`">
+  <div class="w-full bg-White rounded-v flex-center" :style="`height: ${screenHeight}px;`">
     <div class="grid gap-4">
       <h1 class="font-semibold md:font-extrabold tracking-wide">
         Keep it Sample.
       </h1>
-      <h6 class="text-gray-600"> 
+      <h6 class="text-gray-600 dark:text-gray-400"> 
         let us take care of your school management <br> 
         so you can enjoy peace of mind <br> 
         For only <a class="font-bold">4000 DZD/month.</a> <br>

@@ -6,8 +6,7 @@
             </router-link>
         </div>
         <div dir="rtl" class="hidden sm:block">
-            <router-link v-if="user" to="/account">Account</router-link>
-            <router-link v-else to="/login">Login</router-link>
+            <router-link :to="user ? '/account' : '/login'">Account</router-link>
         </div>
         <div dir="rtl" class="sm:hidden">
             <icon-app @click="menu = !menu" :icon="user ? 'fluent:person-24-filled' : 'ep:more-filled'" size="24"
@@ -24,23 +23,35 @@
 
                         <h3 class="-translate-y-2">menu</h3>
 
-                        <router-link v-if="user" to="/account" class="bg-v p-2 flex-between rounded-v">
+                        <router-link :to="user ? '/account' : '/login'" class="bg-v p-2 flex-between rounded-v">
                             <h5>account</h5>
                             <icon-app icon="fluent:person-24-filled" size="24" />
                         </router-link>
 
-                        <div v-else class="grid gap-3">
-                            <router-link to="/" class="bg-v p-2 flex-between rounded-v">
-                                <h5>home</h5>
-                                <icon-app icon="fluent:home-12-filled" size="24" />
+                        <div v-if="route.params.code" class="grid gap-3 mt-4">
+                            <router-link :to="`/school/${route.params.code}/dashboard`" class="bg-v p-2 flex-between rounded-v">
+                                <h5>dashboard</h5>
+                                <icon-app icon="fluent:grid-24-filled" size="24" />
                             </router-link>
-                            <router-link to="/login" class="bg-v p-2 flex-between rounded-v">
-                                <h5>login</h5>
-                                <icon-app icon="fluent:person-arrow-right-16-filled" size="24" />
+                            <router-link :to="`/school/${route.params.code}/students`" class="bg-v p-2 flex-between rounded-v">
+                                <h5>students</h5>
+                                <icon-app icon="fluent:people-12-filled" size="24" />
                             </router-link>
-                            <router-link to="/signup" class="bg-v p-2 flex-between rounded-v">
-                                <h5>sign up</h5>
-                                <icon-app icon="fluent:person-add-16-filled" size="24" />
+                            <router-link :to="`/school/${route.params.code}/courses`" class="bg-v p-2 flex-between rounded-v">
+                                <h5>courses</h5>
+                                <icon-app icon="solar:documents-bold" size="24" />
+                            </router-link>
+                            <router-link :to="`/school/${route.params.code}/timetable`" class="bg-v p-2 flex-between rounded-v">
+                                <h5>timetable</h5>
+                                <icon-app icon="fluent:calendar-ltr-24-filled" size="24" />
+                            </router-link>
+                            <router-link :to="`/school/${route.params.code}/finance`" class="bg-v p-2 flex-between rounded-v">
+                                <h5>finance</h5>
+                                <icon-app icon="fa6-solid:money-check-dollar" size="24" />
+                            </router-link>
+                            <router-link :to="`/school/${route.params.code}/settings`" class="bg-v p-2 flex-between rounded-v">
+                                <h5>settings</h5>
+                                <icon-app icon="fluent:settings-48-filled" size="24" />
                             </router-link>
                         </div>
 
@@ -69,9 +80,13 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router';
 import store from '@/store';
 
+const route = useRoute();
+
 const user = computed(() => store.state.user);
+const school = ref(computed(() => store.state.schools.filter((i) => i.code == route.params.code)[0]));
 
 const menu = ref(false);
 </script>

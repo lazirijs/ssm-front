@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="data" class="sm:flex-between min-w-full sm:min-w-fit bg-White rounded-v overflow-x-auto sm:overflow-y-auto flex-col p-1 min-h-[48px] sm:h-auto">
+  <nav v-if="data" class="hidden sm:flex-between min-w-full sm:min-w-fit bg-White rounded-v overflow-x-auto sm:overflow-y-auto flex-col p-1 min-h-[48px] sm:h-auto">
     <div class="h-full">
       <div class="grid grid-flow-col sm:grid-flow-row gap-1 overflow-auto">
         <router-link 
@@ -18,16 +18,16 @@
         </router-link>
       </div>
     </div>
-    <div class="hidden sm:grid gap-1 min-h-[128px]">
-      <router-link to="/contactus" title="contactus" class="w-10 h-10 hover:bg-v flex-center rounded-v cursor-pointer smooth">
+    <div class="hidden sm:grid gap-1 min-h-[84px]">
+      <router-link to="/contactus" title="Contact us" class="w-10 h-10 hover:bg-v flex-center rounded-v cursor-pointer smooth">
         <icon-app icon="fluent:chat-12-filled" />
       </router-link>
-      <router-link to="/help" title="help" class="w-10 h-10 hover:bg-v flex-center rounded-v cursor-pointer smooth">
+      <router-link to="/help" title="Help" class="w-10 h-10 hover:bg-v flex-center rounded-v cursor-pointer smooth">
         <icon-app icon="fluent:question-circle-12-filled" />
       </router-link>
-      <div class="w-10 h-10 hover:bg-v flex-center rounded-v cursor-pointer smooth">
+      <!-- <div class="w-10 h-10 hover:bg-v flex-center rounded-v cursor-pointer smooth">
         <icon-app class="flip-if-rtl" icon="fluent:chevron-right-12-filled" />
-      </div>
+      </div> -->
     </div>
   </nav>
   <router-view v-if="data" v-bind="$attrs" :school="data" />
@@ -36,7 +36,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import { useRoute } from 'vue-router';
 import store from '@/store';
 
@@ -48,7 +48,7 @@ const nav = ref([
     path: "dashboard"
   },
   {
-    icon: "fluent:person-note-16-filled",
+    icon: "fluent:people-12-filled",
     path: "students"
   },
   {

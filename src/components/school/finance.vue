@@ -37,7 +37,7 @@
                         <a class="flex items-end gap-2">
                             <h6 class="opacity-0">DZD</h6>
                             {{ payments.reduce((sum, { total }) => sum + Number(total), 0) }}
-                            <h6 class="text-gray-600">DZD</h6>
+                            <h6 class="text-gray-600 dark:text-gray-400">DZD</h6>
                         </a>
                     </h2>
                 </div>
@@ -62,7 +62,7 @@
                         <a class="flex items-end gap-2">
                             <h6 class="opacity-0">DZD</h6>
                             {{ -1 * payments.reduce((sum, { price, quantity, total }) => price * quantity > total ? (total - (price * quantity)) + sum : sum, 0) }}
-                            <h6 class="text-gray-600">DZD</h6>
+                            <h6 class="text-gray-600 dark:text-gray-400">DZD</h6>
                         </a>
                     </h2>
                 </div>
@@ -78,7 +78,7 @@
                         <a class="flex items-end gap-2">
                             <h6 class="opacity-0">DZD</h6>
                             {{ -1 * payments.reduce((sum, { total }) => total < 0 ? sum + Number(total) : sum, 0) }}
-                            <h6 class="text-gray-600">DZD</h6>
+                            <h6 class="text-gray-600 dark:text-gray-400">DZD</h6>
                         </a>
                     </h2>
                 </div>
@@ -93,7 +93,7 @@
             </h5>
         </div>
         <h5 v-if="payments.length" class="h-full space-y-4 overflow-y-auto">
-            <h5 v-for="(item, index) in payments" :key="index" class="bg-v rounded-v p-2 grid grid-cols-4 sm:grid-cols-6 gap-4 text-center overflow-y-auto">
+            <h5 v-for="(item, index) in payments" :key="index" class="bg-v bg-v-hover rounded-v p-2 grid grid-cols-4 sm:grid-cols-6 gap-4 text-center overflow-y-auto smooth">
                 <div class="truncate">{{ item.user_name }}</div>
                 <div class="truncate">{{ item.course_name }}</div>
                 <div class="hidden sm:block truncate" :class="{ 'font-bold text-orange-500': item.price <= 0 }">{{ item.price }} <a class="text-xs font-medium">DZD</a></div>
@@ -110,7 +110,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 import { toDate } from "@/utilities/date"
 import store from '@/store';
 

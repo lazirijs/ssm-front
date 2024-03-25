@@ -8,9 +8,9 @@
       </div>
       <div @click="copy(user.code)" class="grid gap-2 text-center mx-auto my-4 cursor-pointer">
         <h2 class="tracking-[.25rem] ml-[.25rem] uppercase">{{ user.code }}</h2>
-        <h6 class="text-gray-600">tap here to copy your code</h6>
+        <h6 class="text-gray-600 dark:text-gray-400">tap here to copy your code</h6>
       </div>
-      <h6 class="mx-auto text-gray-600">{{ user.email }}</h6>
+      <h6 class="mx-auto text-gray-600 dark:text-gray-400">{{ user.email }}</h6>
       <h6 v-if="!schools && getting" class="text-center animate-pulse pt-8">Loading...</h6>
       <div v-if="schools?.length" class="grid gap-4">
         <hr>
@@ -18,7 +18,7 @@
         <div class="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           <router-link v-for="(school, index) in schools" :key="index" :to="`/school/${school.code}/dashboard`" translate="no" class="h-240 grid gap-4 border-2 rounded-v p-4 hover:bg-v smooth cursor-pointer">
             <h2 class="w-full text-center my-4 truncate">{{ school.name }}</h2>
-            <h6 class="mx-auto text-gray-600 uppercase">{{ school.code }}</h6>
+            <h6 class="mx-auto text-gray-600 dark:text-gray-400 uppercase">{{ school.code }}</h6>
           </router-link>
         </div>
         <hr>
@@ -36,7 +36,7 @@
               </div>
               <btn-app @click="create" text="create" icon="fluent:add-12-filled" dark class="mx-auto" :loading="name.length && loading" />
             </form>
-            <h6 class="w-10/12 text-center mx-auto text-gray-600">
+            <h6 class="w-10/12 text-center mx-auto text-gray-600 dark:text-gray-400">
               Join Us Today! let us take care of your school management, so you can enjoy peace of mind, For only <a class="font-bold">4000 DZD/month</a>.
               need help? click <router-link to="/help?create-school" class="link">here.</router-link>
             </h6>
@@ -50,13 +50,13 @@
               </div>
               <btn-app @click="link" text="link" icon="fluent:add-12-filled" dark class="mx-auto" :loading="code.length && loading" />
             </form>
-            <h6 class="w-10/12 text-center mx-auto text-gray-600">
+            <h6 class="w-10/12 text-center mx-auto text-gray-600 dark:text-gray-400">
               Become a part of the educational journey with us. Enjoy the benefits of linking to any school for <a class="font-bold">FREE</a>.
               need help? click <router-link to="/help?link-to-school" class="link">here.</router-link>
             </h6>
           </div>
         </div>
-        <h6 class="text-center mx-auto text-gray-600">
+        <h6 class="text-center mx-auto text-gray-600 dark:text-gray-400">
           For any 
           <router-link to="/help" class="link">questions</router-link> or more
           <router-link to="/help" class="link">informations</router-link> , don't hesitate to 
@@ -72,7 +72,7 @@
 import { ref, onMounted } from 'vue'
 import store from '@/store';
 import router from '@/router';
-import { api } from '@/plugins/axios.js';
+import api from '@/plugins/axios.js';
 
 const loading = ref(false);
 const getting = ref(false);
