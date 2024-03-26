@@ -95,7 +95,7 @@ import store from '@/store';
 const { school } = defineProps({
   school: Object
 });
-
+// hi
 const route = useRoute();
 const router = useRouter();
 
