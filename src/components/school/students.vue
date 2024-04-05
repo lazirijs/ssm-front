@@ -6,7 +6,7 @@
         <icon-app v-if="loading" icon="svg-spinners:ring-resize" />
       </div>
       <div class="flex-between gap-4 my-4">
-        <router-link :to="`/school/${school.code}/students/new?name=${query.name}&birthday=${query.birthday}&email=${query.email}&phone=${query.phone}`"
+        <router-link v-if="$store.getters.permission('students:create')" :to="`/school/${school.code}/students/new?name=${query.name}&birthday=${query.birthday}&email=${query.email}&phone=${query.phone}`"
           class="btn-mini">
           <icon-app icon="fluent:add-12-filled" class="w-3" />
         </router-link>
@@ -26,16 +26,16 @@
     <h6 v-if="!students.length" class="h-full flex-center">{{ getting ? "LOADING..." : "no data to display"}}</h6>
     <h5 v-else @scroll="loadmore" class="h-full space-y-4 overflow-y-auto">
       <router-link v-for="(student, index) in students" :key="index"
-        :to="`/school/${school.code}/students/${student.uid}`" translate="no"
-        class="flex-between gap-4 bg-v bg-v-hover rounded-v py-3 cursor-pointer smooth">
+        :to="`/school/${school.code}/students/${student.uid}`" 
+        class="flex-between gap-4 bg-v bg-v-hover rounded-v py-2 cursor-pointer smooth">
         <div class="min-w-[36px] flex justify-end items-center cursor-pointer">
           <icon-app icon="fluent:folder-16-filled" />
         </div>
         <div class="w-full flex-between gap-4 text-center items-center font-medium">
           <div class="w-full truncate">{{ student.name }}</div>
           <div class="w-full truncate">{{ student.birthday }}</div>
-          <a :href="student.email && `mailto:${student.email}`" @click.stop class="w-full truncate hidden lg:block smooth z-50" :class="{ 'hover:link': student.email }">{{ student.email || "-"}}</a>
-          <a :href="student.phone && `tel:${student.phone}`" @click.stop class="w-full truncate hidden md:block smooth z-50" :class="{ 'hover:link': student.phone }">{{ student.phone || "-"}}</a>
+          <a :href="student.email && `mailto:${student.email}`" @click.stop class="w-full truncate hidden lg:block smooth" :class="{ 'hover:link': student.email }">{{ student.email || "-"}}</a>
+          <a :href="student.phone && `tel:${student.phone}`" @click.stop class="w-full truncate hidden md:block smooth" :class="{ 'hover:link': student.phone }">{{ student.phone || "-"}}</a>
         </div>
       </router-link>
       <h6 v-if="loadingMore && loadingMore != students.length" class="text-center py-3">loading...</h6>

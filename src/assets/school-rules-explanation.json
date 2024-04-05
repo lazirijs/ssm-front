@@ -1,0 +1,110 @@
+{
+  "students:access": {
+    "title": "Access to students list",
+    "description": ""
+  },
+  "students:create": {
+    "title": "Add new student",
+    "description": ""
+  },
+  "students:information:access": {
+    "title": "Access to student information",
+    "description": ""
+  },
+  "students:information:edit": {
+    "title": "Edit student information",
+    "description": ""
+  },
+  "students:courses:access": {
+    "title": "Access to students courses",
+    "description": ""
+  },
+  "students:payments:access": {
+    "title": "Access to student payment",
+    "description": ""
+  },
+  "students:payments:add": {
+    "title": "Add new payment",
+    "description": ""
+  },
+  "students:presence:access": {
+    "title": "Access to student presence",
+    "description": ""
+  },
+  "courses:access": {
+    "title": "Access to courses list",
+    "description": ""
+  },
+  "courses:create": {
+    "title": "Add new course",
+    "description": ""
+  },
+  "courses:information:access": {
+    "title": "Access to course information",
+    "description": ""
+  },
+  "courses:information:edit": {
+    "title": "Edit course information",
+    "description": ""
+  },
+  "courses:lessons:access": {
+    "title": "Access to lessons list",
+    "description": ""
+  },
+  "courses:lessons:create": {
+    "title": "Create new lesson",
+    "description": ""
+  },
+  "courses:presence:access": {
+    "title": "Access to students presence",
+    "description": ""
+  },
+  "courses:presence:edit": {
+    "title": "Edit students presence",
+    "description": ""
+  },
+  "timetable:access": {
+    "title": "Access to timetables list",
+    "description": ""
+  },
+  "timetable:create": {
+    "title": "Add new timetable",
+    "description": ""
+  },
+  "timetable:delete": {
+    "title": "Delete timetable",
+    "description": ""
+  },
+  "finance:access": {
+    "title": "Access to finance",
+    "description": ""
+  },
+  "settings:access": {
+    "title": "Access to settings",
+    "description": ""
+  },
+  "settings:information:edit": {
+    "title": "Edit school information",
+    "description": ""
+  },
+  "settings:users:access": {
+    "title": "Access to users",
+    "description": ""
+  },
+  "settings:users:link": {
+    "title": "Link new user",
+    "description": ""
+  },
+  "settings:users:unlink": {
+    "title": "Unlink user",
+    "description": ""
+  },
+  "settings:users:rules:access": {
+    "title": "Access users rules",
+    "description": ""
+  },
+  "settings:users:rules:edit": {
+    "title": "Edit users rules",
+    "description": ""
+  }
+}

@@ -26,7 +26,7 @@
     <h6 v-if="!courses.length" class="h-full flex-center">{{ getting ? "LOADING..." : "no data to display" }}</h6>
 
     <h5 v-else-if="timetable.course" @click="timetable.course = false"
-      class="flex-between gap-4 bg-v rounded-v py-3 cursor-pointer smooth">
+      class="flex-between gap-4 bg-v rounded-v py-2 cursor-pointer smooth">
       <div class="min-w-[36px] flex justify-end cursor-pointer">
         <icon-app icon="ion:chevron-back-outline" />
       </div>
@@ -43,7 +43,7 @@
 
     <h5 v-else class="h-full space-y-4 overflow-y-auto">
       <div v-if="search.length" v-for="{ uid, name, teacher, price } in search" @click="() => { timetable.course = uid; $router.push({ query: { course: timetable.course } }) }"
-        class="flex-between gap-4 bg-v bg-v-hover rounded-v py-3 cursor-pointer smooth">
+        class="flex-between gap-4 bg-v bg-v-hover rounded-v py-2 cursor-pointer smooth">
         <div class="min-w-[36px] flex justify-end cursor-pointer">
           <icon-app icon="solar:document-bold" />
         </div>
@@ -95,7 +95,7 @@ import store from '@/store';
 const { school } = defineProps({
   school: Object
 });
-// hi
+
 const route = useRoute();
 const router = useRouter();
 

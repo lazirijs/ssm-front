@@ -5,7 +5,7 @@
       <h1 class="font-semibold md:font-extrabold tracking-wide">
         Keep it Sample.
       </h1>
-      <h6 class="text-gray-600 dark:text-gray-400"> 
+      <h6 class="mini-text"> 
         let us take care of your school management <br> 
         so you can enjoy peace of mind <br> 
         For only <a class="font-bold">4000 DZD/month.</a> <br>

@@ -6,23 +6,23 @@
             <h6 v-if="getting.course && !course?.uid" class="text-center">LOADING...</h6>
             <form v-else @submit.prevent="submitForm" class="w-full grid sm:flex-between gap-4">
                 <div class="w-full grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <input-app :value="course.name" @update="course.name = $event" icon="solar:document-bold" placeholder="course full name" class="col-span-2" />
-                    <input-app :value="course.teacher" @update="course.teacher = $event" icon="fluent:person-24-filled" placeholder="teacher name" />
-                    <input-app :value="course.price" @update="course.price = $event" icon="solar:tag-price-bold" type="number" center placeholder="price of one lesson" />
+                    <input-app :value="course.name" @update="course.name = $event" :readonly="!can.edit.course" icon="solar:document-bold" placeholder="course full name" class="col-span-2" />
+                    <input-app :value="course.teacher" @update="course.teacher = $event" :readonly="!can.edit.course" icon="fluent:person-24-filled" placeholder="teacher name" />
+                    <input-app :value="course.price" @update="course.price = $event" :readonly="!can.edit.course" icon="solar:tag-price-bold" type="number" center placeholder="price of one lesson" />
                 </div>
-                <div class="min-w-fit flex justify-end">
+                <div v-if="can.edit.course" class="min-w-fit flex justify-end">
                     <btn-app @click="course?.uid ? update.course(course) : create.course(course)" :text="course?.uid ? 'save' : 'create'" dark :loading="loading.course" icon="fluent:add-12-filled" class="min-w-fit" />
                 </div>
             </form>
         </div>
-        <div class="h-full flex flex-col gap-4 bg-White rounded-v p-4 w-full">
+        <div v-if="can.access.lessons" class="h-full flex flex-col gap-4 bg-White rounded-v p-4 w-full">
             <div class="grid gap-4" :class="{ 'min-h-[112px]': !lesson && lessons.length, 'min-h-[164px]': lesson, 'min-h-[24px]': route.name == 'new course', 'min-h-[76px]': !lessons.length  && route.name != 'new course'}">
                 <div class="flex-between">
                     <h4 class="font-medium">Lessons <a v-if="getting.lessons && lessons.length" class="animate-pulse">...</a></h4>
                     <icon-app v-if="lesson || loading.lessons" @click="lesson ? (() => { lesson = null; query.student = ''; query.color = '#212937'; students = []; lessons = store.state.lessons })() : false" :icon="loading.lessons ? 'svg-spinners:ring-resize' : 'ion:chevron-back-outline'" class="cursor-pointer" />
                 </div>
                 <div v-if="route.name != 'new course' && !lesson" class="flex-between gap-4">
-                    <div @click="create.lesson(course)" class="btn-mini">
+                    <div v-if="store.getters.permission('courses:lessons:create')" @click="create.lesson(course)" class="btn-mini">
                         <icon-app :icon="loading.lesson ? 'svg-spinners:ring-resize' : 'fluent:add-12-filled'" class="w-3" />
                     </div>
                     <form @submit.prevent="submitForm" class="w-full">
@@ -30,20 +30,20 @@
                         <button class="hidden"/>
                     </form>
                 </div>
-                <h5 v-if="route.name == 'course' && lessons.length" class="flex-between text-center px-2">
+                <h5 v-if="route.name == 'course' && lessons.length && (lesson ? can.access.presence : true)" class="flex-between text-center px-2">
                     <div class="w-full truncate">created at</div>
                     <div class="w-full">presents</div>
                     <div class="w-full">absents</div>
                     <div class="w-full" :class="{ 'hidden sm:block': lesson }">total</div>
                 </h5>
-                <h5 v-if="lesson" class="bg-v rounded-v p-2 flex-between text-center">
+                <h5 v-if="can.access.presence && lesson" class="bg-v rounded-v p-2 flex-between text-center">
                     <div class="w-full sm:hidden">{{ $toDate(lesson.created_at, "date") }}</div>
                     <div class="w-full hidden sm:block">{{ $toDate(lesson.created_at, "timestamp") }}</div>
                     <div class="w-full">{{ lesson?.presents.length }}</div>
                     <div class="w-full">{{ lesson?.absents.length }}</div>
                     <div class="w-full" :class="{ 'hidden sm:block': lesson }">{{ lesson?.presents.length + lesson?.absents.length }}</div>
                 </h5>
-                <form @submit.prevent="submitForm" v-if="lesson" class="flex-between gap-2">
+                <form @submit.prevent="submitForm" v-if="can.access.presence && lesson" class="flex-between gap-2">
                     <input-app :value="query.student" @update="query.student = $event" icon="fluent:person-24-filled" type="search" placeholder="student name" accessKey="c" />
                     <div class="flex-center min-w-fit h-[36px] bg-v rounded-v p-2 cursor-pointer">
                         <div @click="query.color = changeColor(query.color)" class="min-w-[1rem] h-4 rounded-full smooth" :style="`background: ${query.color};`"></div>
@@ -51,16 +51,16 @@
                     <button class="hidden"/>
                 </form>
             </div>
-            <div @scroll="loadmore.lessons" class="h-full space-y-4 overflow-y-auto">
+            <div v-if="can.access.lessons " @scroll="loadmore.lessons" class="h-full space-y-4 overflow-y-auto">
                 <h6 v-if="route.name == 'new course'" class="h-full flex-center pb-2">you have to create course first</h6>
-                <h6 v-else-if="(!lessons.length || (lesson && !students.length)) && (getting.lessons || getting.students)" class="h-full flex-center pb-2">LOADING...</h6>
-                <h6 v-else-if="(!lessons.length || (lesson && !searchStudent.length)) && !getting.lessons && !getting.students" class="h-full flex-center pb-2">no data to display</h6>
-                <h5 v-else-if="lesson" v-for="(student, index) in searchStudent" :key="index" class="bg-v bg-v-hover rounded-v p-2 flex-between smooth">
+                <h6 v-else-if="(!lessons.length || (can.access.presence && lesson && !students.length)) && (getting.lessons || getting.students)" class="h-full flex-center pb-2">LOADING...</h6>
+                <h6 v-else-if="(!lessons.length || (can.access.presence && lesson && !searchStudent.length)) && !getting.lessons && !getting.students" class="h-full flex-center pb-2">no data to display</h6>
+                <h5 v-else-if="can.access.presence && lesson" v-for="(student, index) in searchStudent" :key="index" class="bg-v bg-v-hover rounded-v p-2 flex-between smooth">
                     <div class="w-full text-center truncate"><router-link :to="`/school/${school.code}/students/${student.uid}`" class="hover:link">{{ student.name }}</router-link></div>
                     <div class="w-full text-center" :class="{ 'hidden sm:block': lesson }">{{ student.birthday }}</div>
                     <div class="w-full text-center" :class="{ 'text-red-500': student.rest == 0 }">rest : {{ student.rest }}</div>
                     <div class="w-full flex justify-end">
-                        <div @click="update.studentStatus(student)" class="cursor-pointer">
+                        <div @click="can.edit.presence ? update.studentStatus(student) : ''" class="cursor-pointer">
                             <div class="w-4 h-4 rounded-full smooth" :style="`${(() => {
                                 const isPresent = lesson.presents.includes(student.uid);
                                 if (loading.student == student.uid) {
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                 </h5>
-                <h5 v-else-if="lessons.length" v-for="item in lessons" @click="getStudents(item)" class="bg-v bg-v-hover rounded-v p-2 cursor-pointer flex-between text-center smooth">
+                <h5 v-else-if="can.access.lessons && lessons.length" v-for="item in lessons" @click="can.access.presence ? getStudents(item) : ''" class="bg-v bg-v-hover rounded-v p-2 cursor-pointer flex-between text-center smooth">
                     <div class="w-full sm:hidden">{{ $toDate(item.created_at) }}</div>
                     <div class="w-full hidden sm:block">{{ $toDate(item.created_at, "timestamp") }}</div>
                     <div class="w-full">{{ item?.presents.length }}</div>
@@ -97,8 +97,20 @@ import store from '@/store';
 
 const route = useRoute();
 
-const { school } = defineProps({
-    school: Object
+const { school } = defineProps(["school"]);
+
+const can = computed(() => {
+    return {
+        access : {
+            lessons: store.getters.permission("courses:lessons:access"),
+            presence: store.getters.permission("courses:presence:access")
+        },
+        edit : {
+            course: store.getters.permission("courses:information:edit"),
+            lessons: store.getters.permission("courses:lessons:edit"),
+            presence: store.getters.permission("courses:presence:edit")
+        }
+    }
 });
 
 const course = ref({

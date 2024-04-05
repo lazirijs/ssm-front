@@ -6,7 +6,7 @@
             <icon-app v-if="loading" icon="svg-spinners:ring-resize" />
           </div>
           <div class="flex-between gap-4 my-4">
-            <router-link :to="`/school/${school.code}/courses/new?name=${query.name}&teacher=${query.teacher}&price=${query.price}`" class="btn-mini">
+            <router-link v-if="store.getters.permission('courses:create')" :to="`/school/${school.code}/courses/new?name=${query.name}&teacher=${query.teacher}&price=${query.price}`" class="btn-mini">
               <icon-app icon="fluent:add-12-filled" class="w-3" />
             </router-link>
             <div class="w-full flex-between gap-4">
@@ -20,7 +20,7 @@
         </div>
         <h6 v-if="!courses.length" class="h-full flex-center">{{ getting ? "LOADING..." : "no data to display"}}</h6>
         <h5 v-else class="h-full space-y-4 overflow-y-auto">
-            <router-link v-if="search.length" v-for="(course, index) in search" :key="index" :to="`/school/${school.code}/courses/${course.uid}`" translate="no" class="flex-between gap-4 bg-v bg-v-hover rounded-v py-3 cursor-pointer smooth">
+            <router-link v-if="search.length" v-for="(course, index) in search" :key="index" :to="`/school/${school.code}/courses/${course.uid}`"  class="flex-between gap-4 bg-v bg-v-hover rounded-v py-2 cursor-pointer smooth">
               <div class="min-w-[36px] flex justify-end cursor-pointer">
                 <icon-app icon="solar:document-bold" />
               </div>

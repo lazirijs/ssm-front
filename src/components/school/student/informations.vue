@@ -2,12 +2,12 @@
     <div dir="auto" class="bg-White rounded-v flex-1 flex flex-col gap-4 p-4"> 
         <div class="min-h-[24px] flex-between">
             <h4 class="font-medium">informations <a v-if="getting && student.uid" class="animate-pulse">...</a></h4>
-            <icon-app v-if="!data.student.isNew" @click="comp = !comp" :icon="comp ? 'fluent:caret-up-16-filled' : 'fluent:caret-down-16-filled'" class="block sm:hidden cursor-pointer" />
+            <icon-app v-if="!data.student.isNew" @click="compressed = !compressed" :icon="compressed ? 'fluent:caret-up-16-filled' : 'fluent:caret-down-16-filled'" class="block sm:hidden cursor-pointer" />
             <icon-app @click="emits('zoom')" :icon="!data.zoom ? 'ic:round-zoom-out-map' : 'ic:round-zoom-in-map'" class="hidden sm:block cursor-pointer" />
         </div>
         <h6 v-if="!data.student.isNew && getting && !student.uid" class="h-full flex-center pb-2">LOADING...</h6>
-        <div v-else class="sm:block h-full overflow-y-auto" :class="{ 'hidden': !comp, 'block': comp }">
-            <form @submit.prevent="submitForm" class="grid sm:grid-cols-2 gap-4" autocomplete="no">
+        <div v-else class="sm:block h-full overflow-y-auto" :class="{ 'hidden': !compressed, 'block': compressed }">
+            <form @submit.prevent="submitForm" class="flex flex-col sm:grid sm:grid-cols-2 gap-4" autocomplete="no">
                 <div class="space-y-2">
                     <input-app :readonly="data.student.isNew ? false : !edit" required autocomplete="no" :value="student.name" @update="student.name = $event" label="full name" icon="fluent:person-24-filled" placeholder="Laziri Umar" />
                 </div>
@@ -24,11 +24,11 @@
                 <button @click="!edit && data.student.isNew ? create(student) : update(student)" class="hidden" />
             </form>
         </div>
-        <div v-if="data.student.isNew || (edit && student.uid)" class="gap-4 min-h-[36px]" :class="{ 'hidden': !comp, 'flex': comp, 'justify-end': data.student.isNew, 'justify-between items-end': !data.student.isNew }">
+        <div v-if="$store.getters.permission('students:information:edit') && (data.student.isNew || (edit && student.uid))" class="gap-4 min-h-[36px]" :class="{ 'hidden': !compressed, 'flex': compressed, 'justify-end': data.student.isNew, 'justify-between items-end': !data.student.isNew }">
             <h6 v-if="!data.student.isNew" @click="edit = false" class="cursor-pointer">cancel edit</h6>
             <btn-app @click="data.student.isNew ? create(student) : update(student)" :text="data.student.isNew ? 'create' : 'save'" dark :loading="loading" icon="fluent:add-12-filled" />
         </div>
-        <h6 v-if="comp && !getting && !edit && !data.student.isNew" @click="edit = true" class="w-full min-h-[16px] text-center cursor-pointer">edit</h6>
+        <h6 v-if="$store.getters.permission('students:information:edit') && compressed && !getting && !edit && !data.student.isNew" @click="edit = true" class="w-full min-h-[16px] text-center cursor-pointer">edit</h6>
     </div>
 </template>
 
@@ -47,7 +47,7 @@ const { data } = defineProps(["data"]);
 const emits = defineEmits(["zoom"]);
 
 const edit = ref(false);
-const comp = ref(true);
+const compressed = ref(true);
 const getting = ref(false);
 const loading = ref(false);
 
@@ -77,7 +77,7 @@ onMounted(async () => {
 });
 
 const create = async (e) => {
-    if (validated({arr: [e.school, e.name, e.birthday]}) && window.confirm("Do you want to create a new student")) {
+    if (store.getters.permission('students:information:edit') && validated({arr: [e.school, e.name, e.birthday]}) && window.confirm("Do you want to create a new student")) {
         try {
             loading.value = true;
             const result = await api.post("/api/students/create", e);

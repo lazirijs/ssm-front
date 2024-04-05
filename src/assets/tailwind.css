@@ -83,10 +83,9 @@ body {
   h6 {
     @apply text-xs;
   }
-  
-  .text-micro {
-    font-size: .6rem/* 10px */;
-    line-height: .75rem/* 12px */;
+
+  hr {
+    @apply dark:border-gray-600;
   }
 
 }
@@ -141,8 +140,28 @@ body {
     @apply bg-gray-800 dark:bg-gray-500 text-white ;
   }
 
+  .btn {
+    @apply min-w-[36px] min-h-[36px] flex-center p-2 rounded-v cursor-pointer smooth;
+  }
+
   .btn-mini {
     @apply min-w-[36px] min-h-[36px] bg-dark dark:bg-gray-700 hover:opacity-80 rounded-v flex-center cursor-pointer smooth;
+  }
+  
+  .text-micro {
+    @apply text-[.6rem] leading-3;
+  }
+
+  .mini-text {
+    @apply text-gray-600 dark:text-gray-400;
+  }
+
+  .border-v {
+    @apply border-2 dark:border-gray-700 /* dark:border-gray-600 */
+  }
+
+  .full {
+    @apply w-full h-full;
   }
 
 }

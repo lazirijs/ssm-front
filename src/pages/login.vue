@@ -10,10 +10,10 @@
         <div class="grid gap-4 mt-8">
           <btn-app text="Login with Google" @click="login('google')" icon="flat-color-icons:google" :loading="loading" class="min-w-fit mx-auto sm:mx-0"/>
         </div>
-        <h6 class="w-8/12 sm:w-full mt-1 mb-4 text-gray-600 dark:text-gray-400 text-center sm:text-start mx-auto sm:mx-0">click on 'Google' to sign up or login to your account</h6>
+        <h6 class="w-8/12 sm:w-full mt-1 mb-4 mini-text text-center sm:text-start mx-auto sm:mx-0">click on 'Google' to sign up or login to your account</h6>
       </div>
     </div>
-    <div class="w-full h-full roundedv sm:h-auto bg-center bg-cover bg-[url(https://raw.githubusercontent.com/lazirijs/images/main/experiences_devices__ca7eoggbh2z6_large-removebg.png)] sm:bg-[url(https://raw.githubusercontent.com/lazirijs/images/main/experiences_devices__ca7eoggbh2z6_large-removebg%2B.png)]"/>
+    <div class="w-full h-full roundedv sm:h-auto bg-center bg-cover bg-img-vertical-login sm:bg-img-horizontal-login"/>
   </div>
 </template>
 
@@ -32,9 +32,8 @@ const login = async (provider) => {
   try {
     switch (provider) {
       case "google":
-        // const response = await googleTokenLogin(); 
-        // user = await api.get("/api/users/login/google/"+ response.access_token);
-        user = await api.get("/api/users/login/google/ya29.a0Ad52N3_cFhFs6aDNACDkqkIPLrFoy4QuPjIXd1k9Pt_QK6Ffi3FnvsN30wsF81EXYIT8_Oyuuo-5sLwZDrP8GJAUcui8KXJh4cb3HaD6tTn5p-G2JUBRGFEh-Yf-ciHdpZqlClxSLbTHfE9tSRB_m2mmzhEIGimh_fMaCgYKAXASARISFQHGX2MiL9pkIj5R25uY58ioosPsyQ0170");
+        const response = await googleTokenLogin(); 
+        user = await api.get("/api/users/login/google/"+ response.access_token);
         break;
     }
     console.log(user.data);

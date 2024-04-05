@@ -3,7 +3,7 @@
     <div class="min-h-[24px] flex-between">
       <h4 class="font-medium">payments <a v-if="getting && localPayments.length" class="animate-pulse">...</a></h4>
       <icon-app v-if="loading" icon="svg-spinners:ring-resize" />
-      <icon-app v-else @click="comp = !comp" :icon="comp ? 'fluent:caret-up-16-filled' : 'fluent:caret-down-16-filled'"
+      <icon-app v-else @click="compressed = !compressed" :icon="compressed ? 'fluent:caret-up-16-filled' : 'fluent:caret-down-16-filled'"
         class="block sm:hidden cursor-pointer" />
       <icon-app v-if="!loading" @click="emits('zoom')"
         :icon="!data.zoom ? 'ic:round-zoom-out-map' : 'ic:round-zoom-in-map'" class="hidden sm:block cursor-pointer" />
@@ -15,7 +15,7 @@
       class="h-full flex-center pb-2">no data to display</h6>
 
     <form @submit.prevent="submitForm" v-else-if="localPayments.length" class="min-h-[36px] grid-cols-4 gap-2"
-      :class="{ 'hidden sm:grid': !comp, 'grid': comp }">
+      :class="{ 'hidden sm:grid': !compressed, 'grid': compressed }">
       <input-app :value="query.course_name" @update="query.course_name = $event" type="search" placeholder="course"
         class="col-span-2" />
       <input-app :value="query.total" @update="query.total = Number($event)" type="number" placeholder="total"
@@ -23,7 +23,7 @@
       <input-app :value="query.created_at" @update="query.created_at = $event" type="date" center />
       <button @click="search()" class="hidden" />
     </form>
-    <div v-if="!data.student.isNew && payments.length" class="h-full space-y-4" :class="{ 'hidden sm:block': !comp }">
+    <div v-if="!data.student.isNew && payments.length" class="h-full space-y-4" :class="{ 'hidden sm:block': !compressed }">
       <div @scroll="loadmore" class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !data.zoom }">
         <h5 v-for="(payment, index) in payments" :key="index" @click="more == payment.uid ? more = false : more = payment.uid"
           class="grid grid-cols-4 gap-2 bg-v bg-v-hover rounded-v py-2 cursor-pointer">
@@ -39,7 +39,7 @@
             <div>number of lessons : {{payment.quantity}}</div>
             <div>Expected total : {{payment.quantity * payment.price}} DZD</div>
             <div>Final total : {{payment.total}} DZD</div>
-            <h6 class="text-center">created by <router-link :to="`/school/${data.school.code}/linked/${payment.user_code}`" class="link">{{ payment.user_name }}</router-link> at {{ $toDate(payment.created_at, "timestamp") }}</h6>
+            <h6 class="text-center">created by <router-link :to="`/school/${data.school.code}/settings/users/${payment.user_code}`" class="link">{{ payment.user_name }}</router-link> at {{ $toDate(payment.created_at, "timestamp") }}</h6>
           </div>
         </h5>
         <h6 v-if="loadingMore && (typeof loadingMore != 'number')" class="text-center py-3">loading...</h6>
@@ -60,7 +60,7 @@ const router = useRouter();
 
 const { data } = defineProps(["data"]);
 const emits = defineEmits(["zoom"]);
-const comp = ref(false);
+const compressed = ref(false);
 const getting = ref(false);
 const loading = ref(false);
 const loadingMore = ref(false);
@@ -91,10 +91,10 @@ const getPayments = async () => {
   }
 };
 
-router.beforeEach(async (to, from, next) => {
-  await getPayments();
-  next();
-});
+// router.beforeEach(async (to, from, next) => {
+//   await getPayments();
+//   next();
+// });
 
 onMounted(async () => await getPayments());
 

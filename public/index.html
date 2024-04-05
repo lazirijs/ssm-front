@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="" translate="no">
+<html lang="" translate="no">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,5 +13,9 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script>
+      if (localStorage.dark == 'true') document.querySelector("html").classList.add("dark");
+      document.querySelector("html").lang = localStorage.language;
+    </script>
   </body>
 </html>

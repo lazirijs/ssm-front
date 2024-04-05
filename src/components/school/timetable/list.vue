@@ -6,7 +6,7 @@
         <!-- <icon-app v-if="loading" icon="svg-spinners:ring-resize" /> -->
       </div>
       <div class="flex-between gap-4 my-4">
-        <router-link :to="`/school/${school.code}/timetable/new`" class="btn-mini">
+        <router-link v-if="$store.getters.permission('timetable:create')" :to="`/school/${school.code}/timetable/new`" class="btn-mini">
           <icon-app icon="fluent:add-12-filled" class="w-3" />
         </router-link>
         <div class="w-full flex-between gap-4">
@@ -26,12 +26,12 @@
           <h3 class="font-medium min-w-fit">
             {{ query.day ? days[query.day] : days[index+1] }} 
           </h3>
-          <div class="border-b border-solid border-v w-full"></div>
+          <div class="w-full border-b-[1px] dark:border-gray-700" />
         </div>
         <div v-if="courses.length" class="grid sm:grid-cols-3 md:grid-cols-4 gap-4">
           <div v-for="course in courses" class="group bg-v bg-v-hover rounded-v grid gap-2 p-3 smooth">
-            <div class="flex-between gap-4">
-              <router-link :to="`/school/${school.code}/courses/${course.uid}?${course.name}`" class="font-medium truncate cursor-pointer hover:link smooth">{{ course.name }}</router-link>
+            <div class="flex-between gap-2">
+              <router-link :to="$store.getters.permission('courses:information:access') ? `/school/${school.code}/courses/${course.uid}` : ''" :class="{ 'cursor-pointer hover:link smooth': $store.getters.permission('courses:information:access') }" class="font-medium truncate">{{ course.name }}</router-link>
               <h6 class="min-w-fit">{{ course.price }} DZD</h6>
             </div>
             <h6 class="px-4 truncate">{{ course.teacher }}</h6>
@@ -39,7 +39,7 @@
               <div class="flex-between px-4 min-w-fit truncate">
                 {{ course.date && `${course.date} : ` }} {{ course.start_at.slice(0, -3) }} - {{ course.end_at.slice(0, -3) }}</div>
               <h5 class="flex-between gap-2">
-                <icon-app @click="deleteTimeTable(course.timetable_uid)" :icon="loading ? 'svg-spinners:ring-resize' : 'fluent:delete-24-filled'" class="opacity-0 group-hover:opacity-100 cursor-pointer hover:text-red-500 smooth min-w-4 min-h-4" />
+                <icon-app v-if="$store.getters.permission('timetable:create')" @click="deleteTimeTable(course.timetable_uid)" :icon="loading ? 'svg-spinners:ring-resize' : 'fluent:delete-24-filled'" class="opacity-0 group-hover:opacity-100 cursor-pointer hover:text-red-500 smooth min-w-4 min-h-4" />
                 <icon-app v-if="course.date" icon="material-symbols:magic-button" class="min-w-4 min-h-4" />
                 <div v-if="$route.query.uid == course.timetable_uid" :class="{ 'hidden': $route.query.uid != course.timetable_uid }" class="text-micro font-bold text-red-400 min-w-fit">NEW</div>
               </h5>

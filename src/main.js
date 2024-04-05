@@ -21,7 +21,8 @@ const googleAuthOptions = {
   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID
 };
 
-app.use(store).use(router).use(googleAuth, googleAuthOptions)
+app.use(store).use(router)
+.use(googleAuth, googleAuthOptions)
 .component("btn-app", button)
 .component("input-app", input)
 .component("switch-app", Switch)

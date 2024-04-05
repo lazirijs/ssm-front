@@ -32,12 +32,13 @@ const routes = [
     component: () => import('../pages/account.vue')
   },
   {
-    path: '/school/:code',
+    path: '/school/:school',
     name: 'school',
     meta: { auth: "required" },
     component: () => import('../pages/school.vue'),
     children: [
       {
+        alias: "",
         path: "dashboard",
         name: "dashboard",
         component: () => import("../components/school/dashboard.vue")
@@ -45,52 +46,85 @@ const routes = [
       {
         path: "students",
         name: "students",
+        meta: { rule: "students:access" },
         component: () => import("../components/school/students.vue")
       },
       {
         path: "students/new",
         name: "new student",
+        meta: { rule: "students:create" },
         component: () => import("../components/school/student.vue")
       },
       {
         path: "students/:student",
         name: "student",
+        meta: { rule: "students:information:access" },
         component: () => import("../components/school/student.vue")
       },
       {
         path: "courses",
         name: "courses",
+        meta: { rule: "courses:access" },
         component: () => import("../components/school/courses.vue")
       },
       {
         path: "courses/new",
         name: "new course",
+        meta: { rule: "courses:create" },
         component: () => import("../components/school/course.vue")
       },
       {
         path: "courses/:course",
         name: "course",
+        meta: { rule: "courses:information:access" },
         component: () => import("../components/school/course.vue")
       },
       {
         path: "timetable",
         name: "timetable",
-        component: () => import("../components/school/timetable.vue")
+        meta: { rule: "timetable:access" },
+        component: () => import("../components/school/timetable/list.vue")
       },
       {
         path: "timetable/new",
         name: "new timetable",
-        component: () => import("../components/school/newtimetable.vue")
+        meta: { rule: "timetable:create" },
+        component: () => import("../components/school/timetable/new.vue")
       },
       {
         path: "finance",
         name: "finance",
+        meta: { rule: "finance:access" },
         component: () => import("../components/school/finance.vue")
       },
       {
         path: "settings",
         name: "settings",
+        meta: { rule: "settings:access" },
         component: () => import("../components/school/settings.vue")
+      },
+      {
+        path: "settings/users",
+        name: "users",
+        meta: { rule: "settings:users:access" },
+        component: () => import("../components/school/users/list.vue")
+      },
+      {
+        path: "settings/users/new",
+        name: "new user",
+        meta: { rule: "settings:users:link" },
+        component: () => import("../components/school/users/new.vue")
+      },
+      {
+        path: "settings/users/:user",
+        name: "user",
+        meta: { rule: "settings:users:rules:access" },
+        component: () => import("../components/school/users/user.vue")
+      },
+      {
+        path: ":pathMatch(.*)*",
+        name: "404",
+        component: () => import("../pages/404.vue")
       },
     ],
   },
@@ -122,7 +156,22 @@ router.beforeEach(async (to, from, next) => {
   }
   
   if (to.meta.auth == "required") {
-    !user ? next({ path: "/login" }) : next();
+    const school_code = to.params.school;
+    const routeRule = to.matched[1]?.meta?.rule;
+    const allowed = store.state.school?.link?.rules[routeRule];
+    !user ? next({ path: "/login" }) : (
+      routeRule ? 
+        (
+          allowed ? 
+            next() 
+            : next(
+              allowed == false ? 
+                { path: "/404", query: { access: "rejected" } } 
+                : { path: `/school/${school_code}/dashboard` }
+            )
+        ) 
+        : next()
+    );
   } else if (to.meta.auth == "hide") {
     user ? next({ path: "/account" }) : next();
   } else {
