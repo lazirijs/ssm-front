@@ -7,7 +7,7 @@
             <icon-app @click="menu = !menu" :icon="user ? 'fluent:person-24-filled' : 'ep:more-filled'" size="24"
                 class="w-5 h-5 cursor-pointer" name="Account" />
             <Transition>
-                <div v-if="menu" @mouseleave="menu = false" class="min-w-[250px] fixed translate-y-36 bg-white dark:bg-gray-800 border-2 dark:border-gray-600 drop-shadow-2xl p-4 rounded-v m-auto grid gap-3 z-50">
+                <menu v-if="menu" @mouseleave="menu = false" class="min-w-[250px] fixed translate-y-36 bg-white dark:bg-gray-800 border-2 dark:border-gray-600 drop-shadow-2xl p-4 rounded-v m-auto grid gap-3 z-50">
 
                     <div class="flex-between -translate-y-2">
                         <icon-app @click="menu = false" icon="fa6-solid:xmark" size="24" class="cursor-pointer" />
@@ -28,14 +28,14 @@
                         </div>
 
                         <div @click="menu = false" class="grid gap-3 mt-4">
-                            <router-link to="/contactus" class="bg-v bg-v-hover p-2 flex-between rounded-v smooth">
+                            <a href="https://ssm-website.onrender.com/fr/index.html" target="_blank" class="bg-v bg-v-hover p-2 flex-between rounded-v smooth">
                                 <h5>contact us</h5>
                                 <icon-app icon="fluent:chat-12-filled" size="24" />
-                            </router-link>
-                            <router-link to="/help" class="bg-v bg-v-hover p-2 flex-between rounded-v smooth">
+                            </a>
+                            <a href="https://ssm-website.onrender.com/fr/index.html" target="_blank" class="bg-v bg-v-hover p-2 flex-between rounded-v smooth">
                                 <h5>help</h5>
                                 <icon-app icon="fluent:question-circle-12-filled" size="24" />
-                            </router-link>
+                            </a>
                         </div>
 
                         <div class="text-center flex-between">
@@ -43,7 +43,7 @@
                             <h6 v-text="new Date().getFullYear()" class="w-10/12" />
                             <div class="w-full border-b-[1px]" />
                         </div>
-                    </div>
+                    </menu>
             </Transition>
         </div>
 
@@ -51,7 +51,7 @@
             <icon-app @click="menu = !menu" :icon="user ? 'fluent:person-24-filled' : 'ep:more-filled'" size="24"
                 class="w-5 h-5 cursor-pointer" name="Account" />
             <Transition>
-                <div v-if="menu" @click="menu = false"
+                <menu v-if="menu" @click="menu = false"
                     class="flex flex-col items-center fixed h-full w-full top-0 right-0 bg-black bg-opacity-50 z-50">
                     <div dir="auto" class="w-10/12 bg-White p-4 rounded-v m-auto grid gap-3">
                         <div dir="rtl" @click="menu = false">
@@ -104,14 +104,14 @@
                         </div>
 
                         <div class="grid gap-3 mt-4">
-                            <router-link to="/contactus" class="bg-v p-2 flex-between rounded-v">
+                            <a href="https://ssm-website.onrender.com/fr/index.html" target="_blank" class="bg-v p-2 flex-between rounded-v">
                                 <h5>contact us</h5>
                                 <icon-app icon="fluent:chat-12-filled" size="24" />
-                            </router-link>
-                            <router-link to="/help" class="bg-v p-2 flex-between rounded-v">
+                            </a>
+                            <a href="https://ssm-website.onrender.com/fr/index.html" target="_blank" class="bg-v p-2 flex-between rounded-v">
                                 <h5>help</h5>
                                 <icon-app icon="fluent:question-circle-12-filled" size="24" />
-                            </router-link>
+                            </a>
                         </div>
 
                         <div class="text-center flex-between mt-4">
@@ -120,7 +120,7 @@
                             <div class="w-full border-b-[1px]" />
                         </div>
                     </div>
-                </div>
+                </menu>
             </Transition>
         </div>
     </nav>

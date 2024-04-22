@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <div class="min-h-[96px]">
       <div class="flex-between">
-        <h2>students <a v-if="getting && students.length" class="animate-pulse">...</a></h2>
+        <div class="text-pro">students <a v-if="getting && students.length" class="animate-pulse">...</a></div>
         <icon-app v-if="loading" icon="svg-spinners:ring-resize" />
       </div>
       <div class="flex-between gap-4 my-4">

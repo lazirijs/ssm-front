@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <div class="space-y-4 min-h-[96px]">
-            <h2>new user</h2>
+            <h4 class="font-bold">new user</h4>
             <input-app :value="user.toUpperCase()" @update="user = $event" icon="fluent:person-24-filled"
                 placeholder="SDF-4P6-W5U" center maxlength="11" />
         </div>

@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <div class="space-y-4 min-h-[96px]">
       <div class="flex-between">
-        <h2>users <a v-if="getting && link" class="animate-pulse">...</a></h2>
+        <h4 class="font-bold">users <a v-if="getting && link" class="animate-pulse">...</a></h4>
       </div>
       <div class="space-y-4">
         <h5 class="flex-between gap-4 rounded-v smooth">
@@ -10,7 +10,7 @@
             <icon-app icon="ion:chevron-back-outline" />
           </router-link>
           <h4 class="w-full bg-v rounded-v p-1.5 rounded-v text-center truncate">{{ route.params.user.toUpperCase() }}</h4>
-          <div v-if="$store.getters.permission('settings:users:unlink') || $store.state.user.code == link?.user_code" @click="unlink()" class="bg-v btn-mini flex-center p-2 rounded-v cursor-pointer hover:text-red-500 smooth">
+          <div v-if="link?.type != 'owner' && ($store.getters.permission('settings:users:unlink') || $store.state.user.code == link?.user_code)" @click="unlink()" class="bg-v btn-mini flex-center p-2 rounded-v cursor-pointer hover:text-red-500 smooth">
             <icon-app :icon="loading == 'unlink' ? 'svg-spinners:ring-resize' : 'fluent:delete-24-filled'" />
           </div>
         </h5>

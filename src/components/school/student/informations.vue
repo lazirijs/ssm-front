@@ -1,7 +1,7 @@
 <template>
     <div dir="auto" class="bg-White rounded-v flex-1 flex flex-col gap-4 p-4"> 
         <div class="min-h-[24px] flex-between">
-            <h4 class="font-medium">informations <a v-if="getting && student.uid" class="animate-pulse">...</a></h4>
+            <h4  class="font-bold">informations <a v-if="getting && student.uid" class="animate-pulse">...</a></h4>
             <icon-app v-if="!data.student.isNew" @click="compressed = !compressed" :icon="compressed ? 'fluent:caret-up-16-filled' : 'fluent:caret-down-16-filled'" class="block sm:hidden cursor-pointer" />
             <icon-app @click="emits('zoom')" :icon="!data.zoom ? 'ic:round-zoom-out-map' : 'ic:round-zoom-in-map'" class="hidden sm:block cursor-pointer" />
         </div>

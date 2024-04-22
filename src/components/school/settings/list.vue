@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <h2>settings</h2>
+        <div class="text-pro">settings</div>
         <div class="h-full space-y-4 overflow-y-auto gap-4">
             <!-- <input-app /> -->
             <router-link :to="`/school/${school.code}/settings/information`" class="flex-between bg-v py-2 px-4 rounded-v bg-v-hover smooth cursor-pointer">

@@ -148,6 +148,10 @@ body {
     @apply min-w-[36px] min-h-[36px] bg-dark dark:bg-gray-700 hover:opacity-80 rounded-v flex-center cursor-pointer smooth;
   }
   
+  .text-pro {
+    @apply text-2xl leading-7 font-semibold;
+  }
+  
   .text-micro {
     @apply text-[.6rem] leading-3;
   }

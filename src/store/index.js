@@ -11,13 +11,15 @@ const school = {
   users: []
 };
 
+const defaultValue = {
+  user: null,
+  schools: [],
+  school: {},
+  ...school
+};
+
 export default createStore({
-  state: {
-    user: null,
-    schools: [],
-    school: {},
-    ...school
-  },
+  state: defaultValue,
   getters: {
     permission: (state) => (rule) => {
       return state.school?.link?.rules[rule];
@@ -41,6 +43,11 @@ export default createStore({
       state[payload.key] = value.filter(item => item.created_at).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     },
     // ... other mutations
+    resetApp: (state) => {
+      state.user = "";
+      state.schools = [];
+      sessionStorage.clear();
+    },
     resetSchool: (state) => {
       console.log(state);
       for (const key in school) {

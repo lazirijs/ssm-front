@@ -3,7 +3,7 @@
     <div class="grid gap-4">
       <!-- <div class="h-20 sm:h-32 bg-[url(https://bit.ly/3tOsUuK)] bg-cover bg-center rounded-v bg-v"></div> -->
       <div class="flex-between">
-        <h2>account</h2>
+        <h2 class="text-pro">account</h2>
         <h6 @click="logout" title="click here to logout from your account" class="font-medium link">logout</h6>
       </div>
       <div @click="copy(user.code)" class="grid gap-2 text-center mx-auto my-4 cursor-pointer">
@@ -44,31 +44,29 @@
               </div>
               <btn-app @click="create" text="create" icon="fluent:add-12-filled" dark class="mx-auto" :loading="(name.length && loading) || false" />
             </form>
-            <h6 class="w-10/12 text-center mx-auto mini-text">
+            <!-- <h6 class="w-10/12 text-center mx-auto mini-text">
               Join Us Today! let us take care of your school management, so you can enjoy peace of mind, For only <a class="font-bold">4000 DZD/month</a>.
               need help? click <router-link to="/help?create-school" class="link">here.</router-link>
-            </h6>
+            </h6> -->
           </div>
           <h5 class="hidden sm:block m-auto">Or</h5>
           <div class="sm:w-10/12 mx-auto col-span-5 p-4 border-v rounded-v grid gap-6">
-            <h3>Link to another school</h3>
+            <h3>Link to school</h3>
             <form @submit.prevent="submitForm" class="grid gap-4">
               <div class="sm:w-10/12 mx-auto">
                 <input-app :value="code" @update="code = $event.replace(/[^a-zA-Z0-9-]/g, '').toUpperCase()" icon="fluent:link-16-filled" placeholder="enter here the school code" class="mx-auto" :readonly="(code.length && loading) || false" center maxlength="11" />
               </div>
               <btn-app @click="link" text="link" icon="fluent:add-12-filled" dark class="mx-auto" :loading="(code.length && loading) || false" />
             </form>
-            <h6 class="w-10/12 text-center mx-auto mini-text">
+            <!-- <h6 class="w-10/12 text-center mx-auto mini-text">
               Become a part of the educational journey with us. Enjoy the benefits of linking to any school for <a class="font-bold">FREE</a>.
               need help? click <router-link to="/help?link-to-school" class="link">here.</router-link>
-            </h6>
+            </h6> -->
           </div>
         </div>
         <h6 class="text-center mx-auto mini-text">
-          For any 
-          <router-link to="/help" class="link">questions</router-link> or more
-          <router-link to="/help" class="link">informations</router-link> , don't hesitate to 
-          <router-link to="/contactus" class="link">reach out to us</router-link>. 
+          For any questions or more informations, don't hesitate to 
+          <a href="https://ssm-website.onrender.com/fr/index.html" target="_blank" class="link">reach out to us</a>. 
           <br class="hidden sm:block"> Your satisfaction is our priority!
         </h6>
       </div>
@@ -147,7 +145,7 @@ const deleteLink = async (school) => {
 const logout = async () => {
   if (window.confirm(`By clicking "OK" you will be logged out from your account`)) {
     await api.get("/api/users/logout");
-    store.commit("set", {key: "user", value: false});
+    store.commit("resetApp");
     router.push('/login');
   }
 };

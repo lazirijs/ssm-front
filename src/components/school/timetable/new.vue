@@ -2,7 +2,10 @@
   <div class="flex flex-col">
     <div class="space-y-4" :class="{ 'min-h-[96px]': !timetable.course, 'min-h-[44px]': timetable.course }">
       <div class="flex-between">
-        <h2>New Timetable <a v-if="getting && courses.length" class="animate-pulse">...</a></h2>
+        <h4 class="font-bold flex items-end gap-2">New Timetable 
+          <a v-if="getting && courses.length" class="animate-pulse">...</a>
+          <h6 v-else-if="!getting && courses.length" class="mini-text">: choose the {{!timetable.course ? "course" : "time"}}</h6>
+        </h4>
         <icon-app v-if="loading" icon="svg-spinners:ring-resize" />
       </div>
       <div v-if="!timetable.course" class="flex-between gap-4">

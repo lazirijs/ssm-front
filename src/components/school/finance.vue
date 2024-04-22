@@ -2,7 +2,7 @@
     <div class="md:flex md:flex-col space-y-4">
         <div class="flex flex-col space-y-6" :class="{ 'min-h-[316px]': payments.length, 'min-h-[272px]': !payments.length }">
             <div class="flex-between">
-                <h2>finance <a v-if="getting && payments.length" class="animate-pulse">...</a></h2>
+                <div class="text-pro">finance <a v-if="getting && payments.length" class="animate-pulse">...</a></div>
                 <icon-app v-if="loading" icon="svg-spinners:ring-resize" />
             </div>
             <form @submit.prevent="submitForm" class="grid md:grid-cols-4 gap-4">

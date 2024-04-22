@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <div class="min-h-[96px] space-y-4">
       <div class="flex-between">
-        <h2>timetable <a v-if="getting && timetable.length" class="animate-pulse">...</a></h2>
+        <div class="text-pro">timetable <a v-if="getting && timetable.length" class="animate-pulse">...</a></div>
         <!-- <icon-app v-if="loading" icon="svg-spinners:ring-resize" /> -->
       </div>
       <div class="flex-between gap-4 my-4">

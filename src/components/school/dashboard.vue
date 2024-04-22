@@ -1,6 +1,6 @@
 <template>
     <div v-bind="$attrs" class="space-y-4">
-        <h2>dashboard</h2>
+        <div class="text-pro">dashboard</div>
         <div class="grid gap-4 text-center mx-auto">
             <h2   class="tracking-[.0125rem] ml-[.0125rem]">{{school.name}}</h2>
             <h5 @click="copy(school.code)">
@@ -86,7 +86,7 @@ const Routes = ref([
     {
         name: 'school information',
         icon: 'pajamas:information',
-        path: `/school/${school.code}/information`,
+        path: `/school/${school.code}/settings/information`,
         rule: 'settings:information:edit',
         description: 'manage school information'
     },

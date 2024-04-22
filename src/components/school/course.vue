@@ -2,7 +2,7 @@
     <div v-bind="$attrs" class="hidden" />
     <div class="w-full min-h-fit flex flex-col gap-4">
         <div class="min-h-[212px] sm:min-h-[108px] bg-White grid gap-4 rounded-v p-4 w-full">
-            <h4 class="font-medium">informations <a v-if="getting.course && course?.uid" class="animate-pulse">...</a></h4>
+            <h4 class="font-bold">informations <a v-if="getting.course && course?.uid" class="animate-pulse">...</a></h4>
             <h6 v-if="getting.course && !course?.uid" class="text-center">LOADING...</h6>
             <form v-else @submit.prevent="submitForm" class="w-full grid sm:flex-between gap-4">
                 <div class="w-full grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -18,7 +18,7 @@
         <div v-if="can.access.lessons" class="h-full flex flex-col gap-4 bg-White rounded-v p-4 w-full">
             <div class="grid gap-4" :class="{ 'min-h-[112px]': !lesson && lessons.length, 'min-h-[164px]': lesson, 'min-h-[24px]': route.name == 'new course', 'min-h-[76px]': !lessons.length  && route.name != 'new course'}">
                 <div class="flex-between">
-                    <h4 class="font-medium">Lessons <a v-if="getting.lessons && lessons.length" class="animate-pulse">...</a></h4>
+                    <h4 class="font-bold">Lessons <a v-if="getting.lessons && lessons.length" class="animate-pulse">...</a></h4>
                     <icon-app v-if="lesson || loading.lessons" @click="lesson ? (() => { lesson = null; query.student = ''; query.color = '#212937'; students = []; lessons = store.state.lessons })() : false" :icon="loading.lessons ? 'svg-spinners:ring-resize' : 'ion:chevron-back-outline'" class="cursor-pointer" />
                 </div>
                 <div v-if="route.name != 'new course' && !lesson" class="flex-between gap-4">
@@ -34,7 +34,7 @@
                     <div class="w-full truncate">created at</div>
                     <div class="w-full">presents</div>
                     <div class="w-full">absents</div>
-                    <div class="w-full" :class="{ 'hidden sm:block': lesson }">total</div>
+                    <div class="w-full hidden sm:block">total</div>
                 </h5>
                 <h5 v-if="can.access.presence && lesson" class="bg-v rounded-v p-2 flex-between text-center">
                     <div class="w-full sm:hidden">{{ $toDate(lesson.created_at, "date") }}</div>
@@ -79,7 +79,7 @@
                     <div class="w-full hidden sm:block">{{ $toDate(item.created_at, "timestamp") }}</div>
                     <div class="w-full">{{ item?.presents.length }}</div>
                     <div class="w-full">{{ item?.absents.length }}</div>
-                    <div class="w-full">{{ item?.presents.length + item?.absents.length }}</div>
+                    <div class="w-full hidden sm:block">{{ item?.presents.length + item?.absents.length }}</div>
                 </h5>
                 <h6 v-if="loadingMore.lessons && (typeof loadingMore.lessons != 'number')" class="text-center py-3">loading...</h6>
             </div>

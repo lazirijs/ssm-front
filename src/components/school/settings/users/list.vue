@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <div class="space-y-4 min-h-[96px]">
       <div class="flex-between">
-        <h2>users <a v-if="getting && users.length" class="animate-pulse">...</a></h2>
+        <div class="text-pro">users <a v-if="getting && users.length" class="animate-pulse">...</a></div>
         <icon-app v-if="loading" icon="svg-spinners:ring-resize" />
       </div>
 

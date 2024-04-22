@@ -4,21 +4,6 @@ import api from '@/plugins/axios.js';
 
 const routes = [
   {
-    path: '/home',
-    name: 'home',
-    component: () => import('../pages/home.vue')
-  },
-  {
-    path: '/help',
-    name: 'help',
-    component: () => import('../pages/help.vue')
-  },
-  {
-    path: '/contactus',
-    name: 'contactus',
-    component: () => import('../pages/contactus.vue')
-  },
-  {
     path: '/login',
     name: 'login',
     meta: { auth: "hide" },
@@ -101,25 +86,30 @@ const routes = [
         path: "settings",
         name: "settings",
         meta: { rule: "settings:access" },
-        component: () => import("../components/school/settings.vue")
+        component: () => import("../components/school/settings/list.vue")
       },
       {
         path: "settings/users",
         name: "users",
         meta: { rule: "settings:users:access" },
-        component: () => import("../components/school/users/list.vue")
+        component: () => import("../components/school/settings/users/list.vue")
       },
       {
         path: "settings/users/new",
         name: "new user",
         meta: { rule: "settings:users:link" },
-        component: () => import("../components/school/users/new.vue")
+        component: () => import("../components/school/settings/users/new.vue")
       },
       {
         path: "settings/users/:user",
         name: "user",
         meta: { rule: "settings:users:rules:access" },
-        component: () => import("../components/school/users/user.vue")
+        component: () => import("../components/school/settings/users/user.vue")
+      },
+      {
+        path: "settings/information",
+        name: "infomation",
+        component: () => import("../components/school/settings/information.vue")
       },
       {
         path: ":pathMatch(.*)*",
@@ -139,7 +129,7 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       resolve({ left: 0, top: 0 })
     })
   }

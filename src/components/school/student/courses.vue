@@ -1,7 +1,7 @@
 <template>
   <div dir="auto" class="bg-White rounded-v flex-1 flex-col gap-4 p-4">
     <div class="min-h-[24px] flex-between">
-      <h4>courses <a v-if="getting && courses.length" class="animate-pulse">...</a></h4>
+      <h4 class="font-bold">courses <a v-if="getting && courses.length" class="animate-pulse">...</a></h4>
       <!-- <icon-app v-if="loading" icon="svg-spinners:ring-resize" /> -->
       <icon-app @click="compressed = !compressed" :icon="compressed ? 'fluent:caret-up-16-filled' : 'fluent:caret-down-16-filled'"
         class="block sm:hidden cursor-pointer" />
