@@ -20,13 +20,13 @@
         class="col-span-2" />
       <input-app :value="query.total" @update="query.total = Number($event)" type="number" placeholder="total"
         center />
-      <input-app :value="query.created_at" @update="query.created_at = $event" type="date" center />
+      <input-app :value="query.created_at" @update="query.created_at = $event" @change="search()" type="date" center />
       <button @click="search()" class="hidden" />
     </form>
     <div v-if="!data.student.isNew && payments.length" class="h-full space-y-4" :class="{ 'hidden sm:block': !compressed }">
       <div @scroll="loadmore" class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !data.zoom }">
         <h5 v-for="(payment, index) in payments" :key="index" @click="more == payment.uid ? more = false : more = payment.uid"
-          class="grid grid-cols-4 gap-2 bg-v bg-v-hover rounded-v py-2 cursor-pointer">
+          class="grid grid-cols-4 gap-2 bg-v bg-v-hover rounded-v py-2 cursor-pointer smooth">
           <div v-if="more != payment.uid" dir="ltr" class="flex-between gap-1 col-span-2 px-2">
             <a class="min-w-fit">{{ payment.quantity }}</a>-
             <a dir="auto" class="w-full truncate">{{ payment.course_name }}</a>
@@ -82,12 +82,16 @@ watchEffect(() => {
 
 const getPayments = async () => {
   if (!data.student.isNew) {
-    getting.value = true;
-    const result = await api.post("/api/payments/search", query.value);
-    payments.value = result.data;
-    store.commit("set", {key: "payments", value: result.data});
-    loadingMore.value = result.data.length < 20 && result.data.length;
-    getting.value = false;
+    try {
+      getting.value = true;
+      const result = await api.post("/api/payments/search", query.value);
+      payments.value = result.data;
+      store.commit("set", {key: "payments", value: result.data});
+      loadingMore.value = result.data.length < 20 && result.data.length;
+      getting.value = false;
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
@@ -99,23 +103,31 @@ const getPayments = async () => {
 onMounted(async () => await getPayments());
 
 const search = async () => {
-  loading.value = true;
-  loadingMore.value = false;
-  const result = await api.post("/api/payments/search", query.value);
-  payments.value = result.data;
-  loadingMore.value = result.data.length < 20 && result.data.length;
-  loading.value = false;
+  try {
+    loading.value = true;
+    loadingMore.value = false;
+    const result = await api.post("/api/payments/search", query.value);
+    payments.value = result.data;
+    loadingMore.value = result.data.length < 20 && result.data.length;
+    loading.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const loadmore = async (event) => {
   const scroll = event.target;
   if(!loadingMore.value && scroll.scrollHeight - scroll.clientHeight - 50 < Math.round(scroll.scrollTop)) {
-    console.log("--- loading more ---");
-    loadingMore.value = true;
-    const result = await api.post(`/api/payments/search?offset=${payments.value.length}`, query.value);
-    payments.value = [ ...payments.value, ...result.data ];
-    store.commit("set", {key: "payments", value: payments.value});
-    loadingMore.value = result.data.length < 20 && payments.value.length;
+    try {
+      console.log("loadmore : payments");
+      loadingMore.value = true;
+      const result = await api.post(`/api/payments/search?offset=${payments.value.length}`, query.value);
+      payments.value = [ ...payments.value, ...result.data ];
+      store.commit("set", {key: "payments", value: payments.value});
+      loadingMore.value = result.data.length < 20 && payments.value.length;
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 </script>

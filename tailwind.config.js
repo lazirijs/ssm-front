@@ -7,8 +7,8 @@ module.exports = {
     extend: {
       backgroundImage: {
         'img-logo': "url('/src/assets/logo.png')",
-        'img-vertical-login': "url('/src/assets/vertical-login.png')",
-        'img-horizontal-login': "url('/src/assets/horizontal-login.png')",
+        'img-vertical-login': "url('/src/assets/img/vertical-login.png')",
+        'img-horizontal-login': "url('/src/assets/img/horizontal-login.png')",
       }
     },
     accentColor: ({ theme }) => ({

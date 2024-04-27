@@ -14,7 +14,7 @@
           <button @click="search()" class="hidden" />
           <input-app :value="query.name" @update="query.name = $event" icon="fluent:person-24-filled" accessKey="c"
             type="search" center placeholder="student name" />
-          <input-app :value="query.birthday" @update="query.birthday = $event" type="date"
+          <input-app :value="query.birthday" @update="query.birthday = $event" @change="search()" type="date"
             icon="fluent:calendar-24-filled" center />
           <input-app :value="query.email" @update="query.email = $event" class="hidden lg:flex"
             type="search" icon="fluent:mail-24-filled" center placeholder="student email" />
@@ -67,32 +67,45 @@ const query = ref({
 const students = ref(store.state.students);
 
 onMounted(async () => {
-  getting.value = true;
-  loadingMore.value = false;
-  const { data } = await api.post("/api/students/search", query.value);
-  students.value = data;
-  store.commit("set", {key: "students", value: data});
-  loadingMore.value = data.length < 20 && students.value.length;
-  getting.value = false;
+  try {
+    getting.value = true;
+    loadingMore.value = false;
+    const { data } = await api.post("/api/students/search", query.value);
+    students.value = data;
+    store.commit("set", {key: "students", value: data});
+    loadingMore.value = data.length < 20 && students.value.length;
+    getting.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const search = async () => {
-  loading.value = true;
-  loadingMore.value = false;
-  const { data } = await api.post("/api/students/search", query.value);
-  students.value = data;
-  loadingMore.value = data.length < 20 && students.value.length;
-  loading.value = false;
+  try {
+    loading.value = true;
+    loadingMore.value = false;
+    const { data } = await api.post("/api/students/search", query.value);
+    students.value = data;
+    loadingMore.value = data.length < 20 && students.value.length;
+    loading.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const loadmore = async (event) => {
   const scroll = event.target;
   if(!loadingMore.value && scroll.scrollHeight - scroll.clientHeight - 250 < Math.round(scroll.scrollTop)) {
-    loadingMore.value = true;
-    const { data } = await api.post(`/api/students/search?offset=${students.value.length}`, query.value);
-    students.value = [ ...students.value, ...data ];
-    store.commit("set", {key: "students", value: students.value});
-    loadingMore.value = data.length < 20 && students.value.length;
+    try {
+      console.log("loadmore : students");
+      loadingMore.value = true;
+      const { data } = await api.post(`/api/students/search?offset=${students.value.length}`, query.value);
+      students.value = [ ...students.value, ...data ];
+      store.commit("set", {key: "students", value: students.value});
+      loadingMore.value = data.length < 20 && students.value.length;
+    } catch (error) {
+      console.log(error);
+    }
   };
   // console.log({
   //   scrollTop: Math.round(scroll.scrollTop),

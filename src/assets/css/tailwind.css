@@ -85,7 +85,7 @@ body {
   }
 
   hr {
-    @apply dark:border-gray-600;
+    @apply border-[.75px] border-theme-default;
   }
 
 }
@@ -162,6 +162,22 @@ body {
 
   .border-v {
     @apply border-2 dark:border-gray-700 /* dark:border-gray-600 */
+  }
+
+  .border-theme {
+    @apply border-slate-300 dark:border-slate-600;
+  }
+
+  .border-theme-default {
+    @apply border-slate-200 dark:border-slate-700;
+  }
+
+  .border-default {
+    @apply border-[1px] border-theme-default;
+  }
+
+  .border-pro {
+    @apply border-[1.6px] border-theme;
   }
 
   .full {

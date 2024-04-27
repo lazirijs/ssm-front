@@ -72,14 +72,18 @@ const days = ["All Days",  "Sunday",  "Monday",  "Tuesday",  "Wednesday",  "Thur
 const timetable = ref([]);
 
 onMounted(async () => {
-  getting.value = true;
-  // loadingMore.value = false;
-  const { data } = await api.get("/api/timetables/get/" + school.code);
-  // console.log(data);
-  timetable.value = data;
-  store.commit("set", {key: "timetables", value: data});
-  // loadingMore.value = data.length < 20 && data.length;
-  getting.value = false;
+  try {
+    getting.value = true;
+    // loadingMore.value = false;
+    const { data } = await api.get("/api/timetables/get/" + school.code);
+    // console.log(data);
+    timetable.value = data;
+    store.commit("set", {key: "timetables", value: data});
+    // loadingMore.value = data.length < 20 && data.length;
+    getting.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const current = (dateString) => {
@@ -136,11 +140,15 @@ const second_array = computed((first_array = search.value) => {
 
 const deleteTimeTable = async (uid) => {
   if (uid && window.confirm("Do you want to delete this timetable ?")) {
-      loading.value = true;
-      const result = await api.delete("/api/timetables/delete/" + uid);
-      timetable.value = timetable.value.filter(item => item.timetable_uid != uid);
-      console.log(result);
-      loading.value = false;
+      try {
+        loading.value = true;
+        const result = await api.delete("/api/timetables/delete/" + uid);
+        timetable.value = timetable.value.filter(item => item.timetable_uid != uid);
+        console.log(result);
+        loading.value = false;
+      } catch (error) {
+        console.log(error);
+      }
   };
 };
 </script>

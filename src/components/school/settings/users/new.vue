@@ -56,14 +56,14 @@ const { school } = defineProps({
 const loading = ref(false);
 
 const user = ref("");
-const rules = ref(require('@/assets/school-rules.json'));
+const rules = ref(require('@/assets/json/school-rules.json'));
 const rulesGroup = computed(() => Object.entries(rules.value).reduce((acc, [key, value]) => {
     const [group] = key.split(':');
     acc[group] = acc[group] || {};
     acc[group][key] = value;
     return acc;
 }, {}));
-const rulesExplanation = ref(require('@/assets/school-rules-explanation.json'));
+const rulesExplanation = ref(require('@/assets/json/school-rules-explanation.json'));
 
 const isCodeValid = computed(() => {
     const pattern = /^[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3}$/;

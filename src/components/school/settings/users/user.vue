@@ -60,7 +60,7 @@ const link = ref(null);
 
 const rulesGroup = (e) => {
   const originalRules = {};
-  for (const key in require('@/assets/school-rules.json')) {
+  for (const key in require('@/assets/json/school-rules.json')) {
     originalRules[key] = e[key];
   }
   const rules = Object.entries(originalRules).reduce((acc, [key, value]) => {
@@ -77,34 +77,46 @@ const rulesGroup = (e) => {
     settings: rules.settings,
   };
 };
-const rulesExplanation = ref(require('@/assets/school-rules-explanation.json'));
+const rulesExplanation = ref(require('@/assets/json/school-rules-explanation.json'));
 
 onMounted(async () => {
-  getting.value = true;
-  const result = await api.get(`/api/link/${route.params.user}/${school.code}`);
-  if (result.data.exists) {
-    link.value = result.data.data;
-    getting.value = false;
-  } else {
-    getting.value = "user not found";
+  try {
+    getting.value = true;
+    const result = await api.get(`/api/link/${route.params.user}/${school.code}`);
+    if (result.data.exists) {
+      link.value = result.data.data;
+      getting.value = false;
+    } else {
+      getting.value = "user not found";
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 
 const update = async () => {
   if (!loading.value && window.confirm("Do you want to edit this user ?")) {
-    loading.value = "update";
-    const result = await api.post(`/api/link/${route.params.user}/${school.code}`, link.value.rules);
-    console.log(result.data);
-    router.go(-1);
+    try {
+      loading.value = "update";
+      const result = await api.post(`/api/link/${route.params.user}/${school.code}`, link.value.rules);
+      console.log(result.data);
+      router.go(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 
 const unlink = async () => {
   if (!loading.value && window.confirm("Do you want to unlink this user ?")) {
-    loading.value = "unlink";
-    const result = await api.delete(`/api/link/${route.params.user}/${school.code}`);
-    console.log(result.data);
-    router.go(-1);
+    try {
+      loading.value = "unlink";
+      const result = await api.delete(`/api/link/${route.params.user}/${school.code}`);
+      console.log(result.data);
+      router.go(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 </script>

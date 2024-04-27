@@ -32,37 +32,37 @@ const routes = [
         path: "students",
         name: "students",
         meta: { rule: "students:access" },
-        component: () => import("../components/school/students.vue")
+        component: () => import("../components/school/students/list.vue")
       },
       {
         path: "students/new",
         name: "new student",
         meta: { rule: "students:create" },
-        component: () => import("../components/school/student.vue")
+        component: () => import("../components/school/students/student/main.vue")
       },
       {
         path: "students/:student",
         name: "student",
         meta: { rule: "students:information:access" },
-        component: () => import("../components/school/student.vue")
+        component: () => import("../components/school/students/student/main.vue")
       },
       {
         path: "courses",
         name: "courses",
         meta: { rule: "courses:access" },
-        component: () => import("../components/school/courses.vue")
+        component: () => import("../components/school/courses/list.vue")
       },
       {
         path: "courses/new",
         name: "new course",
         meta: { rule: "courses:create" },
-        component: () => import("../components/school/course.vue")
+        component: () => import("../components/school/courses/course.vue")
       },
       {
         path: "courses/:course",
         name: "course",
         meta: { rule: "courses:information:access" },
-        component: () => import("../components/school/course.vue")
+        component: () => import("../components/school/courses/course.vue")
       },
       {
         path: "timetable",
@@ -140,9 +140,13 @@ router.beforeEach(async (to, from, next) => {
   var user = store.state.user;
 
   if (user == null) {
-    const result = await api.get("/api/users/enter");
-    store.commit("set", {key: "user", value: result.data});
-    user = result.data;
+    try {
+      const result = await api.get("/api/users/enter");
+      store.commit("set", {key: "user", value: result.data});
+      user = result.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
   
   if (to.meta.auth == "required") {

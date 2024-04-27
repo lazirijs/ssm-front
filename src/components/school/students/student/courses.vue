@@ -24,7 +24,7 @@
     
     <div v-if="!data.student.isNew && courses.length" class="min-h-[36px] gap-2" :class="{ 'hidden sm:flex-between': !compressed, 'flex-between': compressed }">
       <input-app :value="query.course" @update="query.course = $event" type="search" icon="solar:document-bold" placeholder="course name" />
-      <div @click="query.color = changeColor(query.color)" class="flex-center min-w-fit h-[36px] bg-v rounded-v p-2 cursor-pointer">
+      <div @click="query.color = changeColor(query.color)" class="flex-center min-w-fit h-[36px] bg-v rounded-v p-2 cursor-pointer border-pro">
         <div class="min-w-[1rem] h-4 rounded-full smooth" :style="`background: ${query.color};`"></div>
       </div>
     </div>
@@ -114,11 +114,15 @@ const changeColor = (color) => {
 };
 
 onMounted(async () => {
-  getting.value = true;
-  const result = await api.get("/api/courses/get/all/" + data.school.code);
-  courses.value = result.data;
-  store.commit("set", {key: "courses", value: result.data});
-  getting.value = false;
+  try {
+    getting.value = true;
+    const result = await api.get("/api/courses/get/all/" + data.school.code);
+    courses.value = result.data;
+    store.commit("set", {key: "courses", value: result.data});
+    getting.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const totalCalculation = (quantity,price) => {

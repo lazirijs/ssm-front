@@ -2,9 +2,9 @@
     <div v-bind="$attrs" class="space-y-4">
         <div class="text-pro">dashboard</div>
         <div class="grid gap-4 text-center mx-auto">
-            <h2   class="tracking-[.0125rem] ml-[.0125rem]">{{school.name}}</h2>
+            <h2 class="tracking-[.0125rem] ml-[.0125rem]">{{school.name}}</h2>
             <h5 @click="copy(school.code)">
-                <a   class="tracking-[.125rem] ml-[.125rem] font-medium uppercase">{{ school.code }}</a>
+                <a class="tracking-[.125rem] ml-[.125rem] font-medium uppercase">{{ school.code }}</a>
                 <br> 
                 <h6 class="mini-text mt-2 cursor-pointer">tap here to copy school code</h6>
             </h5>
@@ -23,6 +23,7 @@
             </div>
             <h6 v-else class="h-full flex-center">no data to display</h6>
         </div>
+        <h6 v-else class="text-center">loading...</h6>
     </div>
 </template>
 
@@ -111,7 +112,7 @@ const search = computed(() =>  Routes.value.filter( item =>
     item.description.toLowerCase().includes(query.value.toLowerCase())
 ));
 
-const copy = (text) => {
+const copy = text => {
   const textarea = document.createElement('textarea');
   textarea.value = text;
   document.body.appendChild(textarea);

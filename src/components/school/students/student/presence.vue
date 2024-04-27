@@ -14,19 +14,20 @@
           <input-app :value="query.course" @update="query.course = $event" type="search" placeholder="courses" class="col-span-4" />
           <input-app :value="query.created_at" @update="query.created_at = $event" type="date" class="col-span-2" center />
         </div>
-        <div class="flex-center min-w-fit h-[36px] bg-v rounded-v p-2 cursor-pointer">
+        <div class="flex-center min-w-fit h-[36px] bg-v rounded-v p-2 cursor-pointer border-pro">
           <div @click="query.color = changeColor(query.color)" class="min-w-[1rem] h-4 rounded-full smooth" :style="`background: ${query.color};`"></div>
         </div>
       </div>
       <div v-if="!data.student.isNew && lessons.length" class="h-full space-y-4" :class="{ 'hidden sm:block': !comp }">
         <div class="sm:h-full space-y-4 overflow-y-auto" :class="{ 'max-h-[250px]': !data.zoom }">
-          <h5 v-for="(lesson, index) in search" :key="index" class="flex-between gap-2 sm:gap-4 bg-v bg-v-hover rounded-v p-2 smooth">
+          <h5 v-if="search.length" v-for="(lesson, index) in search" :key="index" class="flex-between gap-2 sm:gap-4 bg-v bg-v-hover rounded-v p-2 smooth">
               <div class="w-full grid grid-cols-6 gap-2">
-                  <div class="truncate col-span-4">{{ courseName(lesson.course) }}</div>
-                  <div class="truncate text-center col-span-2">{{ $toDate(lesson.created_at) }}</div>
+                <div class="truncate col-span-4">{{ courseName(lesson.course) }}</div>
+                <div class="truncate text-center col-span-2">{{ $toDate(lesson.created_at) }}</div>
               </div>
               <div class="min-w-[1rem] h-4 rounded-full smooth" :style="`background: ${lesson?.presents?.includes(data.student.uid) ? '#0B6E4F' : '#FA9F42' };`"></div>
           </h5>
+          <h6 v-else class="h-full flex-center">no data to display</h6>
         </div>
       </div>
     </div>
@@ -69,11 +70,15 @@ const changeColor = color => {
 
 onMounted(async () => {
   if (data.student.uid) {
-    getting.value = true;
-    const result = await api.get("/api/lessons/get/student/" + data.student.uid);
-    lessons.value = result.data;
-    // loadingMore.value = data.length < 20 && data.length;
-    getting.value = false;
+    try {
+      getting.value = true;
+      const result = await api.get("/api/lessons/get/student/" + data.student.uid);
+      lessons.value = result.data;
+      // loadingMore.value = data.length < 20 && data.length;
+      getting.value = false;
+    } catch (error) {
+      console.log(error);
+    }
   }
 });
 

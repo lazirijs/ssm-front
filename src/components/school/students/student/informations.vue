@@ -62,12 +62,16 @@ store.state.students.flat().find((e) => e.uid == data.student.uid ? student.valu
 
 onMounted(async () => {
     if (!data.student.isNew) {
-        getting.value = true;
-        const result = await api.get("/api/students/get/" + data.student.uid);
-        student.value = result.data;
-        store.commit("set", {key: "student", value: result.data});
-        store.commit("add", {key: "students", value: result.data});
-        getting.value = false;
+        try {
+            getting.value = true;
+            const result = await api.get("/api/students/get/" + data.student.uid);
+            student.value = result.data;
+            store.commit("set", {key: "student", value: result.data});
+            store.commit("add", {key: "students", value: result.data});
+            getting.value = false;
+        } catch (error) {
+            console.log(error);
+        }
     } else {
         student.value.name = route.query.name;
         student.value.birthday = route.query.birthday;
@@ -94,13 +98,17 @@ const create = async (e) => {
 
 const update = async (e) => {
     if (e.school && e.name && e.birthday && window.confirm("Do you want to update current student")) {
-        loading.value = true;
-        const result = await api.post("/api/students/update", e);
-        // result.data.birthday = toDate(result.data.birthday);
-        student.value = result.data;
-        store.commit("add", {key: "students", value: result.data});
-        loading.value = false;
-        edit.value = false;
+        try {
+            loading.value = true;
+            const result = await api.post("/api/students/update", e);
+            // result.data.birthday = toDate(result.data.birthday);
+            student.value = result.data;
+            store.commit("add", {key: "students", value: result.data});
+            loading.value = false;
+            edit.value = false;
+        } catch (error) {
+            console.log(error);
+        }
     };
 };
 </script>

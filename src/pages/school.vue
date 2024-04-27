@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="school" class="hidden sm:flex-between min-w-full sm:min-w-fit bg-White rounded-v overflow-x-auto sm:overflow-y-auto flex-col p-1 min-h-[48px] sm:h-auto">
+  <nav v-if="school" class="hidden sm:flex-between min-w-full sm:min-w-fit bg-White rounded-v overflow-x-auto sm:overflow-y-auto flex-col p-1 min-h-[48px] sm:h-auto -border-pro">
     <div class="h-full">
       <div class="grid grid-flow-col sm:grid-flow-row gap-1 overflow-auto">
         <router-link 
@@ -30,7 +30,7 @@
       </div> -->
     </div>
   </nav>
-  <router-view v-if="school" v-bind="$attrs" :school="school" />
+  <router-view v-if="school" v-bind="$attrs" :school="school" class="-border-pro" />
   <div v-else v-bind="$attrs" class="flex-center">{{ getting }}</div>
 </template>
 
@@ -81,13 +81,17 @@ const school = computed(() => store.state.schools.filter((i) => i.code == code)[
 
 onMounted(async () => {
   getting.value = "Loading...";
-  const result = await api.get("/api/schools/get/" + code );
-  if (result.data.haveAccess) {
-    store.commit("add", {key: "schools", value: result.data.school});
-    store.commit("set", {key: "school", value: result.data.school});
-    getting.value = false;
-  } else {
-    getting.value = "You don't have access to this school";
+  try {
+    const result = await api.get("/api/schools/get/" + code );
+    if (result.data.haveAccess) {
+      store.commit("add", {key: "schools", value: result.data.school});
+      store.commit("set", {key: "school", value: result.data.school});
+      getting.value = false;
+    } else {
+      getting.value = "You don't have access to this school";
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 </script>

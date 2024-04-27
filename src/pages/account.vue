@@ -90,11 +90,15 @@ const code = ref("");
 const more = ref(false);
 
 onMounted(async () => {
-  getting.value = true;
-  const result = await api.get("/api/schools/user");
-  store.commit("set", {key: "schools", value: result.data});
-  schools.value = result.data;
-  getting.value = false;
+  try {
+    getting.value = true;
+    const result = await api.get("/api/schools/user");
+    store.commit("set", {key: "schools", value: result.data});
+    schools.value = result.data;
+    getting.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const copy = (text) => {
@@ -108,37 +112,49 @@ const copy = (text) => {
 
 const link = async () => {
   if (code.value && !loading.value) {
-    loading.value = true;
-    const { data } = await api.post("/api/link/new", { user: user.value.code, school: code.value });
-    console.log(data);
-    if (data.status == "inactive") { 
-      const result = await api.get("/api/schools/user");
-      store.commit("set", {key: "schools", value: result.data});
-      schools.value = result.data;
-      loading.value = false;
-    } else if (data.status == "active") {
-      router.push(`/school/${data.school_code}/dashboard`); 
+    try {
+      loading.value = true;
+      const { data } = await api.post("/api/link/new", { user: user.value.code, school: code.value });
+      console.log(data);
+      if (data.status == "inactive") { 
+        const result = await api.get("/api/schools/user");
+        store.commit("set", {key: "schools", value: result.data});
+        schools.value = result.data;
+        loading.value = false;
+      } else if (data.status == "active") {
+        router.push(`/school/${data.school_code}/dashboard`); 
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 };
 
 const create = async () => {
   if (name.value && !loading.value) {
-    loading.value = true;
-    const result = await api.post("/api/schools/create", { name: name.value, email: user.value.email });
-    router.push(`/school/${result.data.school_code}/dashboard`);
+    try {
+      loading.value = true;
+      const result = await api.post("/api/schools/create", { name: name.value, email: user.value.email });
+      router.push(`/school/${result.data.school_code}/dashboard`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
 const deleteLink = async (school) => {
   if (!loading.value && school && window.confirm(`Are you sure you want to unlink "${school.name}" school?`)) {
-    loading.value = school.code;
-    const result = await api.post("/api/link/delete", { user: user.value.code, school: school.code });
-    if (result.data) {
-      schools.value = schools.value.filter(i => i.code != school.code);
-      store.commit("set", {key: "schools", value: schools.value});
+    try {
+      loading.value = school.code;
+      const result = await api.post("/api/link/delete", { user: user.value.code, school: school.code });
+      if (result.data) {
+        schools.value = schools.value.filter(i => i.code != school.code);
+        store.commit("set", {key: "schools", value: schools.value});
+      }
+      loading.value = false;
+    } catch (error) {
+      console.log(error);
     }
-    loading.value = false;
   }
 };
 

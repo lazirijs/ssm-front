@@ -8,26 +8,16 @@
             <form @submit.prevent="submitForm" class="grid md:grid-cols-4 gap-4">
                 <button @click="search()" class="hidden"/>
                 <div class="grid gap-2">
-                    <input-app label="from"
-                        :value="query.from" @update="query.from = $event" 
-                        type="datetime-local" icon="fluent:calendar-24-filled" :max="query.to" 
-                    />
+                    <input-app label="from" :value="query.from" @update="query.from = $event" @change="search()" type="datetime-local" icon="fluent:calendar-24-filled" :max="query.to" />
                 </div>
                 <div class="grid gap-2">
-                    <input-app label="to"
-                        :value="query.to" @update="query.to = $event" 
-                        type="datetime-local" icon="fluent:calendar-24-filled" :min="query.from" 
-                    />
+                    <input-app label="to" :value="query.to" @update="query.to = $event" @change="search()" type="datetime-local" icon="fluent:calendar-24-filled" :min="query.from" />
                 </div>
                 <div class="grid gap-2">
-                    <input-app label="user"
-                        :value="query.user"  @update="query.user = $event" class="" type="search" icon="fluent:person-24-filled" placeholder="user name" 
-                    />
+                    <input-app label="user" :value="query.user" @update="query.user = $event" class="" type="search" icon="fluent:person-24-filled" placeholder="user name" />
                 </div>
                 <div class="grid gap-2">
-                    <input-app label="course"
-                        :value="query.course"  @update="query.course = $event" class="" type="search" icon="solar:document-bold" placeholder="course name" 
-                    />
+                    <input-app label="course" :value="query.course" @update="query.course = $event" class="" type="search" icon="solar:document-bold" placeholder="course name" />
                 </div>
             </form>
             <div class="grid md:grid-cols-4 gap-4">
@@ -132,12 +122,16 @@ const query = ref({
 const payments = ref(store.state.payments);
 
 const search = async (first) => {
-  first ? getting.value = true : loading.value = true;
-  query.value.from = query.value.from || toDate() + 'T00:00';
-  query.value.to = query.value.to || toDate() + 'T23:59';
-  const { data } = await api.post("/api/payments/get/school", query.value);
-  payments.value = data;
-  first ? getting.value = false : loading.value = false;
+  try {
+    first ? getting.value = true : loading.value = true;
+    query.value.from = query.value.from || toDate() + 'T00:00';
+    query.value.to = query.value.to || toDate() + 'T23:59';
+    const { data } = await api.post("/api/payments/get/school", query.value);
+    payments.value = data;
+    first ? getting.value = false : loading.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 onMounted(async () => await search(true));

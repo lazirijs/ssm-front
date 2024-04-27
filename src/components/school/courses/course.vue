@@ -45,7 +45,7 @@
                 </h5>
                 <form @submit.prevent="submitForm" v-if="can.access.presence && lesson" class="flex-between gap-2">
                     <input-app :value="query.student" @update="query.student = $event" icon="fluent:person-24-filled" type="search" placeholder="student name" accessKey="c" />
-                    <div class="flex-center min-w-fit h-[36px] bg-v rounded-v p-2 cursor-pointer">
+                    <div class="flex-center min-w-fit h-[36px] bg-v rounded-v p-2 cursor-pointer border-pro">
                         <div @click="query.color = changeColor(query.color)" class="min-w-[1rem] h-4 rounded-full smooth" :style="`background: ${query.color};`"></div>
                     </div>
                     <button class="hidden"/>
@@ -56,7 +56,7 @@
                 <h6 v-else-if="(!lessons.length || (can.access.presence && lesson && !students.length)) && (getting.lessons || getting.students)" class="h-full flex-center pb-2">LOADING...</h6>
                 <h6 v-else-if="(!lessons.length || (can.access.presence && lesson && !searchStudent.length)) && !getting.lessons && !getting.students" class="h-full flex-center pb-2">no data to display</h6>
                 <h5 v-else-if="can.access.presence && lesson" v-for="(student, index) in searchStudent" :key="index" class="bg-v bg-v-hover rounded-v p-2 flex-between smooth">
-                    <div class="w-full text-center truncate"><router-link :to="`/school/${school.code}/students/${student.uid}`" class="hover:link">{{ student.name }}</router-link></div>
+                    <router-link :to="`/school/${school.code}/students/${student.uid}`" class="w-full text-center truncate hover:link">{{ student.name }}</router-link>
                     <div class="w-full text-center" :class="{ 'hidden sm:block': lesson }">{{ student.birthday }}</div>
                     <div class="w-full text-center" :class="{ 'text-red-500': student.rest == 0 }">rest : {{ student.rest }}</div>
                     <div class="w-full flex justify-end">
@@ -151,21 +151,25 @@ const query = ref({
 
 onMounted(async () => {
     if (route.name == "course") {
-        course.value = store.state.courses.flat().find((e) => e.uid == route.params.course);
-        getting.value.course = true;
-        getting.value.lessons = true;
-        const { data } = await api.get("/api/courses/get/" + route.params.course);
-        const result = await api.post("/api/lessons/search", { course: query.value.course });
-        course.value = data;
-        lessons.value = result.data;
-        store.commit("add", {key: "courses", value: data});
-        store.commit("set", {key: "lessons", value: result.data});
-        loadingMore.value.lessons = data.length < 20 && result.data.length;
-        if (route.query.lesson) {
-            await getStudents(result.data.filter(lesson => lesson.uid == route.query.lesson)[0]);
+        try {
+            course.value = store.state.courses.flat().find((e) => e.uid == route.params.course);
+            getting.value.course = true;
+            getting.value.lessons = true;
+            const { data } = await api.get("/api/courses/get/" + route.params.course);
+            const result = await api.post("/api/lessons/search", { course: query.value.course });
+            course.value = data;
+            lessons.value = result.data;
+            store.commit("add", {key: "courses", value: data});
+            store.commit("set", {key: "lessons", value: result.data});
+            loadingMore.value.lessons = data.length < 20 && result.data.length;
+            if (route.query.lesson) {
+                await getStudents(result.data.filter(lesson => lesson.uid == route.query.lesson)[0]);
+            }
+            getting.value.course = false;
+            getting.value.lessons = false;
+        } catch (error) {
+            console.log(error);
         }
-        getting.value.course = false;
-        getting.value.lessons = false;
     } else {
         course.value.name = route.query.name;
         course.value.teacher = route.query.teacher;
@@ -174,18 +178,22 @@ onMounted(async () => {
 });
 
 const getStudents = async (e) => {
-    lesson.value = e;
-    getting.value.students = true;
-    query.value.date = null;
-    router.push({ query: { lesson: e.uid } });
-    const result = await api.post("/api/lessons/get/students", { 
-        lesson: e.uid, 
-        course: e.course, 
-        students: [ ...e.presents, ...e.absents ], 
-        date: e.created_at, 
-    });
-    students.value = result.data;
-    getting.value.students = false;
+    try {
+        lesson.value = e;
+        getting.value.students = true;
+        query.value.date = null;
+        router.push({ query: { lesson: e.uid } });
+        const result = await api.post("/api/lessons/get/students", { 
+            lesson: e.uid, 
+            course: e.course, 
+            students: [ ...e.presents, ...e.absents ], 
+            date: e.created_at, 
+        });
+        students.value = result.data;
+        getting.value.students = false;
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const changeColor = (color) => {
@@ -202,25 +210,33 @@ const changeColor = (color) => {
 const create = {
     course: async (e) => {
         if (validated({arr: Object.values(e)}) && window.confirm("Do you want to create a new course")) {
-            loading.value.course = true;
-            const result = await api.post("/api/courses/create", e);
-            console.log(result.data);
-            course.value = result.data;
-            router.push(`/school/${school.code}/courses/${result.data.uid}`);
-            store.commit("add", {key: "courses", value: result.data});
-            loading.value.course = false;
+            try {
+                loading.value.course = true;
+                const result = await api.post("/api/courses/create", e);
+                console.log(result.data);
+                course.value = result.data;
+                router.push(`/school/${school.code}/courses/${result.data.uid}`);
+                store.commit("add", {key: "courses", value: result.data});
+                loading.value.course = false;
+            } catch (error) {
+                console.log(error);
+            }
         };
     },
     lesson: async (e) => {
         if (e.school && e.uid && window.confirm("Do you want to create new lesson")) {
-            loading.value.lesson = true;
-            const { data } = await api.post("/api/lessons/create", {school: e.school, course: e.uid});
-            lesson.value = data;
-            console.log(data);
-            students.value = data.students || [];
-            lessons.value.unshift(data);
-            store.commit("add", {key: "lessons", value: data});
-            loading.value.lesson = false;
+            try {
+                loading.value.lesson = true;
+                const { data } = await api.post("/api/lessons/create", {school: e.school, course: e.uid});
+                lesson.value = data;
+                console.log(data);
+                students.value = data.students || [];
+                lessons.value.unshift(data);
+                store.commit("add", {key: "lessons", value: data});
+                loading.value.lesson = false;
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 };
@@ -228,28 +244,36 @@ const create = {
 const update = {
     course: async (e) => {
         if (!Object.values(e).includes(null) && window.confirm("Do you want to update current course")) {
-            loading.value.course = true;
-            const result = await api.post("/api/courses/update", e);
-            course.value = result.data;
-            store.commit("add", {key: "courses", value: result.data});
-            loading.value.course = false;
+            try {
+                loading.value.course = true;
+                const result = await api.post("/api/courses/update", e);
+                course.value = result.data;
+                store.commit("add", {key: "courses", value: result.data});
+                loading.value.course = false;
+            } catch (error) {
+                console.log(error);
+            }
         };
     },
     studentStatus: async (student) => {
         const { uid, presents } = lesson.value;
         const present = presents.includes(student.uid);
         if (window.confirm(`Do you really want to Change "${student.name}" present status from ${present ? "present" : "absent"} to ${present ? "absent" : "present"} ?`)) {
-            loading.value.student = student.uid;
-            const { data } = await api.post("/api/lessons/student/change/status", { lesson: uid, student: student.uid, present});
-            lesson.value = data;
-            
-            const index = lessons.value.findIndex(i => i.uid == uid);
-            if (index != -1) {
-                lessons.value[index] = data;
-                store.commit("set", {key: "lessons", value: lessons.value});
+            try {
+                loading.value.student = student.uid;
+                const { data } = await api.post("/api/lessons/student/change/status", { lesson: uid, student: student.uid, present});
+                lesson.value = data;
+                
+                const index = lessons.value.findIndex(i => i.uid == uid);
+                if (index != -1) {
+                    lessons.value[index] = data;
+                    store.commit("set", {key: "lessons", value: lessons.value});
+                }
+    
+                loading.value.student = false;
+            } catch (error) {
+                console.log(error);
             }
-
-            loading.value.student = false;
         };
     },
 };
@@ -272,12 +296,16 @@ const search = {
     lessons: async () => {
         console.log(query.value.date);
         if (query.value.date.length == 10 || !query.value.date.length) {
-            loading.value.lessons = true;
-            loadingMore.value.lessons = false;
-            const { data } = await api.post("/api/lessons/search", { course: query.value.course, created_at: query.value.date });
-            lessons.value = data;
-            loadingMore.value.lessons = data.length < 20 && data.length;
-            loading.value.lessons = false;
+            try {
+                loading.value.lessons = true;
+                loadingMore.value.lessons = false;
+                const { data } = await api.post("/api/lessons/search", { course: query.value.course, created_at: query.value.date });
+                lessons.value = data;
+                loadingMore.value.lessons = data.length < 20 && data.length;
+                loading.value.lessons = false;
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }
@@ -286,11 +314,16 @@ const loadmore = {
     lessons: async (event) => {
         const scroll = event.target;
         if(!loadingMore.value.lessons && scroll.scrollHeight - scroll.clientHeight - 250 < Math.round(scroll.scrollTop)) {
-            loadingMore.value.lessons = true;
-            const { data } = await api.post(`/api/lessons/search?offset=${lessons.value.length}`, { course: query.value.course, created_at: query.value.date });
-            lessons.value = [ ...lessons.value, ...data ];
-            store.commit("set", {key: "lessons", value: lessons.value});
-            loadingMore.value.lessons = data.length < 20 && lessons.value.length;
+            try {
+                console.log("loadmore : lessons");
+                loadingMore.value.lessons = true;
+                const { data } = await api.post(`/api/lessons/search?offset=${lessons.value.length}`, { course: query.value.course, created_at: query.value.date });
+                lessons.value = [ ...lessons.value, ...data ];
+                store.commit("set", {key: "lessons", value: lessons.value});
+                loadingMore.value.lessons = data.length < 20 && lessons.value.length;
+            } catch (error) {
+                console.log(error);
+            }
         };
     }
 }

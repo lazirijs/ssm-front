@@ -61,13 +61,17 @@ const query = ref({
 const courses = ref(store.state.courses);
 
 onMounted(async () => {
-  getting.value = true;
-  // loadingMore.value = false;
-  const { data } = await api.get("/api/courses/get/all/" + school.code);
-  courses.value = data;
-  store.commit("set", {key: "courses", value: data});
-  // loadingMore.value = data.length < 20 && data.length;
-  getting.value = false;
+try {
+    getting.value = true;
+    // loadingMore.value = false;
+    const { data } = await api.get("/api/courses/get/all/" + school.code);
+    courses.value = data;
+    store.commit("set", {key: "courses", value: data});
+    // loadingMore.value = data.length < 20 && data.length;
+    getting.value = false;
+} catch (error) {
+  console.log(error);
+}
 });
 
 const search = computed(() => {

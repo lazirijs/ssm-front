@@ -129,11 +129,15 @@ const courses = ref(store.state.courses);
 const courseData = computed(() => courses.value.filter(course => course.uid == timetable.value.course)[0]);
 
 onMounted(async () => {
-  getting.value = true;
-  const { data } = await api.get("/api/courses/get/all/" + school.code);
-  courses.value = data;
-  store.commit("set", { key: "courses", value: data });
-  getting.value = false;
+  try {
+    getting.value = true;
+    const { data } = await api.get("/api/courses/get/all/" + school.code);
+    courses.value = data;
+    store.commit("set", { key: "courses", value: data });
+    getting.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const current = (dateString) => {
@@ -161,11 +165,15 @@ const create = async (e) => {
   }
   console.log(e);
   if (validated({arr: Object.values(e)}) && window.confirm("Do you want to create a new timetable ?")) {
+    try {
       loading.value = true;
       const result = await api.post("/api/timetables/create", e);
       console.log(result.data);
       router.push(`/school/${school.code}/timetable?uid=${result.data.uid}`);
       store.commit("add", {key: "timetables", value: result.data});
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 </script>

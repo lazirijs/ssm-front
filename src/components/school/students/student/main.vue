@@ -15,10 +15,10 @@
 <script setup>
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import studentCourses from "./student/courses";
-import studentPayments from "./student/payments";
-import studentPresence from "./student/presence";
-import studentInformations from "./student/informations";
+import studentCourses from "./courses";
+import studentPayments from "./payments";
+import studentPresence from "./presence";
+import studentInformations from "./informations";
 
 const route = useRoute();
 const router = useRouter();

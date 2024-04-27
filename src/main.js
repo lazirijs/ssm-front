@@ -3,7 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import './assets/tailwind.css'
+import './assets/css/tailwind.css'
 import { Icon } from "@iconify/vue";
 import googleAuth from 'vue3-google-login'
 import input from "./components/utilities/input.vue";

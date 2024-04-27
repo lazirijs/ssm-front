@@ -1,13 +1,13 @@
 <template>
-    <nav dir="ltr" class="bg-White h-[50px] p-4 flex-between rounded-v z-50">
-        <img @click="$router.push('/')" name="Logo" src="../assets/logo.png" class="h-8">
+    <nav dir="ltr" class="bg-White h-[50px] p-4 flex-between rounded-v z-50 -border-pro">
+        <img @click="$router.push('/')" name="Logo" src="../assets/img/logo.png" class="h-8">
         <!-- <img @click="$router.push('/')" name="Logo" src="../assets/logo.png" class="h-4 dark:hidden">
         <img @click="$router.push('/')" name="Logo" src="../assets/logo-white.png" class="h-4 hidden dark:block"> -->
         <div dir="rtl" class="hidden sm:flex-between gap-6">
             <icon-app @click="menu = !menu" :icon="user ? 'fluent:person-24-filled' : 'ep:more-filled'" size="24"
                 class="w-5 h-5 cursor-pointer" name="Account" />
             <Transition>
-                <menu v-if="menu" @mouseleave="menu = false" class="min-w-[250px] fixed translate-y-36 bg-white dark:bg-gray-800 border-2 dark:border-gray-600 drop-shadow-2xl p-4 rounded-v m-auto grid gap-3 z-50">
+                <menu v-if="menu" @mouseleave="menu = false" class="min-w-[250px] fixed translate-y-36 bg-white dark:bg-gray-800 border-v drop-shadow-2xl p-4 rounded-v m-auto grid gap-3 z-50">
 
                     <div class="flex-between -translate-y-2">
                         <icon-app @click="menu = false" icon="fa6-solid:xmark" size="24" class="cursor-pointer" />
@@ -19,15 +19,19 @@
                                 <h5>account</h5>
                                 <icon-app icon="fluent:person-24-filled" size="24" />
                             </router-link>
-                            <div @click="change(language == 'ar' ? 'fr' : 'ar')" :title="`Switch to ${language == 'ar' ? 'French' : 'Arabic'} language`" class="min-w-fit bg-v bg-v-hover p-2 flex-between rounded-v cursor-pointer smooth">
-                                <icon-app icon="heroicons:language-16-solid" size="24" />
-                            </div>
                             <div @click="mode(!dark)" :title="`Switch to ${dark ? 'Light' : 'Dark'} mode`" class="min-w-fit bg-v bg-v-hover p-2 flex-between rounded-v cursor-pointer smooth">
                                 <icon-app :icon="dark ? 'line-md:moon-filled-to-sunny-filled-loop-transition' : 'line-md:sunny-filled-loop-to-moon-filled-loop-transition'" size="24" />
+                            </div>
+                            <div @click="change(language == 'ar' ? 'fr' : 'ar')" :title="`Switch to ${language == 'ar' ? 'French' : 'Arabic'} language`" class="min-w-fit bg-v bg-v-hover p-2 flex-between rounded-v cursor-pointer smooth">
+                                <icon-app icon="heroicons:language-16-solid" size="24" />
                             </div>
                         </div>
 
                         <div @click="menu = false" class="grid gap-3 mt-4">
+                            <button v-if="!installed" @click="install" class="bg-v bg-v-hover p-2 flex-between rounded-v smooth">
+                                <h5>Install App</h5>
+                                <icon-app icon="fluent:arrow-download-16-filled" size="24" />
+                            </button>
                             <a href="https://ssm-website.onrender.com/fr/index.html" target="_blank" class="bg-v bg-v-hover p-2 flex-between rounded-v smooth">
                                 <h5>contact us</h5>
                                 <icon-app icon="fluent:chat-12-filled" size="24" />
@@ -104,6 +108,10 @@
                         </div>
 
                         <div class="grid gap-3 mt-4">
+                            <button v-if="!installed" @click="install" class="bg-v p-2 flex-between rounded-v">
+                                <h5>Install App</h5>
+                                <icon-app icon="fluent:arrow-download-16-filled" size="24" />
+                            </button>
                             <a href="https://ssm-website.onrender.com/fr/index.html" target="_blank" class="bg-v p-2 flex-between rounded-v">
                                 <h5>contact us</h5>
                                 <icon-app icon="fluent:chat-12-filled" size="24" />
@@ -164,5 +172,27 @@ const change = i => {
     language.value = i;
     localStorage.language = i;
     app.lang = i;
+};
+
+const installed = ref(true);
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installed.value = false;
+});
+
+const install = () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice => {
+      if (choice.outcome == 'accepted') {
+        console.log('PWA installed');
+      }
+      installed.value = true; 
+    });
+    deferredPrompt = null;
+  }
 };
 </script>
