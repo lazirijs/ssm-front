@@ -1,4 +1,4 @@
-# front-end
+# user interface for SSM
 
 ### SSM software of schools management ( web app ) url
 
