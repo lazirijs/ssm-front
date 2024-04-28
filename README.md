@@ -1,5 +1,9 @@
 # front-end
 
+### SSM software of schools management ( web app ) url
+
+the url of the front-end for SSM : [ssm-front.onrender.com](https://ssm-front.onrender.com)
+
 ## Project setup
 ```
 npm install
