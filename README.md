@@ -4,6 +4,8 @@
 
 the user interface (front-end) url for SSM : [ssm-front.onrender.com](https://ssm-front.onrender.com)
 
+####⚠️ Project ready for testing but not for production ⚠️####
+
 ## Project setup
 ```
 npm install
